@@ -17,6 +17,7 @@ angular.module('methodApp', [
 	'pascalprecht.translate',
 	'snap',
 	'textAngular',
+	'gridster',
 
 	// Volusion modules
 	'config',

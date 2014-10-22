@@ -36,6 +36,7 @@ module.exports = function(config) {
 			'app/bower_components/textAngular/dist/textAngular.min.js',
 			'app/bower_components/angular-ui-bootstrap-bower/ui-bootstrap.js',
 			'app/bower_components/vn-toolbox-common/dist/vn-toolbox-common.js',
+			'app/bower_components/angular-gridster/dist/angular-gridster.min.js',
 			'app/scripts/**/*.js',
 			'test/mock/**/*.js',
 			'test/spec/**/*.mocha.js',

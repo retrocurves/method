@@ -16,6 +16,7 @@
 	<link rel="stylesheet" href="/bower_components/angular-snap/angular-snap.css" />
 	<link rel="stylesheet" href="/bower_components/fontawesome/css/font-awesome.css" />
 	<link rel="stylesheet" href="/bower_components/vn-toolbox-common/dist/vn-toolbox-common-styles.css" />
+	<link rel="stylesheet" href="/bower_components/angular-gridster/dist/angular-gridster.min.css" />
 	<!-- endbower -->
 	<link rel="stylesheet" href="/bower_components/easyzoom/css/easyzoom.css" />
 	<!-- endbuild -->
@@ -85,17 +86,15 @@
 	<script src="/bower_components/angular-translate-loader-partial/angular-translate-loader-partial.js"></script>
 	<script src="/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
 	<script src="/bower_components/angular-translate-storage-local/angular-translate-storage-local.js"></script>
-	<script src="/bower_components/firebase/firebase.js"></script>
-	<script src="/bower_components/firebase-simple-login/firebase-simple-login.js"></script>
-	<script src="/bower_components/mockfirebase/dist/mockfirebase.js"></script>
-	<script src="/bower_components/angularfire/dist/angularfire.min.js"></script>
 	<script src="/bower_components/easyzoom/dist/easyzoom.js"></script>
 	<script src="/bower_components/enquire/dist/enquire.js"></script>
 	<script src="/bower_components/vn-toolbox-common/dist/vn-toolbox-common.js"></script>
 	<script src="/bower_components/textAngular/dist/textAngular.min.js"></script>
 	<script src="/bower_components/headjs/dist/1.0.0/head.min.js"></script>
 	<script src="/bower_components/vn-inception/dist/vn-inception.js"></script>
+	<script src="/bower_components/angular-gridster/src/angular-gridster.js"></script>
 	<!-- endbower -->
+	<script src="/bower_components/javascript-detect-element-resize/jquery.resize.js"></script>
 	<!-- endbuild -->
 
 	<!-- build:js({.tmp,app}) /scripts/scripts.js -->
@@ -112,9 +111,11 @@
 	<script src="scripts/controllers/article.js"></script>
 	<script src="scripts/controllers/theme-settings.js"></script>
 	<script src="scripts/controllers/shopping-cart.js"></script>
+	<script src="scripts/controllers/tile.js"></script>
 
 	<script src="scripts/services/content-mgr.js"></script>
 	<script src="scripts/services/notifications.js"></script>
+	<script src="scripts/directives/tile-content.js"></script>
 	<!-- endbuild -->
 
 </body>

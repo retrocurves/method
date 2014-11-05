@@ -1,7 +1,7 @@
 angular.module('Volusion.controllers')
 	.controller('CategoryCtrl', [
-		'$q', '$scope', '$rootScope', '$routeParams', '$location', '$route', 'vnApi', 'vnProductParams', 'vnAppRoute', 'ContentMgr',
-		function ($q, $scope, $rootScope, $routeParams, $location, $route, vnApi, vnProductParams, vnAppRoute, ContentMgr) {
+		'$q', '$scope', '$rootScope', '$routeParams', '$location', '$route', 'vnApi', 'vnApiClient', 'vnProductParams', 'vnAppRoute', 'ContentMgr',
+		function ($q, $scope, $rootScope, $routeParams, $location, $route, vnApi, vnApiClient, vnProductParams, vnAppRoute, ContentMgr) {
 
 			'use strict';
 
@@ -24,17 +24,23 @@ angular.module('Volusion.controllers')
 				$scope.toggleSearch();
 			};
 
-			$scope.getCategory = function (newSlug) {
-				vnApi.Category().get({ slug: newSlug }).$promise.then(function (response) {
+			$scope.getCategory = function (newSlug, id) {
+				vnApiClient.api.Category().get(id).then(function (response) {
 					// Handle the category data
+					console.log(response);
 					$scope.category = response.data;
-					vnProductParams.addCategory(response.data.id);
-					$scope.queryProducts();
+
+
+					vnProductParams.addCategory(response.data.categoryId);
+					$scope.queryProducts(response.data.categoryId);
 				});
 			};
 
-			$scope.queryProducts = function () {
+			$scope.queryProducts = function (id) {
 				var params = vnProductParams.getParamsObject();
+				vnApiClient.api.Product().queryByCategoryId(id).then(function (response) {
+					console.log(response);
+				});
 				vnApi.Product().get(params).$promise.then(function (response) {
 
 					$scope.products = response.data;
@@ -68,7 +74,7 @@ angular.module('Volusion.controllers')
 
 			$scope.$on('$viewContentLoaded', function () {
 				vnAppRoute.setRouteStrategy('category');
-				$scope.getCategory($routeParams.slug);
+				$scope.getCategory($routeParams.slug, $routeParams.id);
 			});
 		}
 	]);

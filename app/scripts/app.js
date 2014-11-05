@@ -28,8 +28,8 @@ angular.module('methodApp', [
 	'Volusion.services'
 ])
 
-.config(['$routeProvider', '$locationProvider', 'translateProvider', 'vnAppConfigProvider', 'vnDataEndpointProvider', 'ENV',
-	function ($routeProvider, $locationProvider, translateProvider, vnAppConfigProvider, vnDataEndpointProvider, ENV) {
+.config(['$routeProvider', '$locationProvider', 'translateProvider', 'vnAppConfigProvider', 'vnDataEndpointProvider', 'ENV', 'vnApiClientProvider',
+	function ($routeProvider, $locationProvider, translateProvider, vnAppConfigProvider, vnDataEndpointProvider, ENV, vnApiClientProvider) {
 
 		'use strict';
 
@@ -47,6 +47,8 @@ angular.module('methodApp', [
 		};
 
 		translateProvider.configure(translateOptions);
+
+		vnApiClientProvider.setAppAuthInfo(ENV.apiConfig);
 
 		$routeProvider
 			.when('/', {
@@ -68,7 +70,7 @@ angular.module('methodApp', [
 					}]
 				}
 			})
-			.when('/c/:slug', {
+			.when('/c/:slug/:id', {
 				templateUrl   : 'views/category.html',
 				controller    : 'CategoryCtrl',
 				reloadOnSearch: false,
@@ -126,8 +128,24 @@ angular.module('methodApp', [
 			});
 	}])
 
-.run(['snapRemote', '$rootScope', '$window', 'themeSettings', 'vnCart', 'ContentMgr', 'translate', 'vnModalService', 'vnViewPortWatch',
-	function (snapRemote, $rootScope, $window, themeSettings, vnCart, ContentMgr, translate, vnModalService, vnViewPortWatch) {
+.run([	'snapRemote',
+		'$rootScope',
+		'$window',
+		'themeSettings',
+		'vnCart',
+		'ContentMgr',
+		'translate',
+		'vnModalService',
+		'vnViewPortWatch',
+	function (snapRemote,
+			  $rootScope,
+			  $window,
+			  themeSettings,
+			  vnCart,
+			  ContentMgr,
+			  translate,
+			  vnModalService,
+			  vnViewPortWatch) {
 
 		'use strict';
 

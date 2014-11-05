@@ -6,11 +6,19 @@
 // 'test/spec/{,*/}*.js'
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
+var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest,
+	modRewrite   = require('connect-modrewrite'),
+	appConfig = {
+		app : 'app',
+		dist: 'dist'
+	};
 
 module.exports = function(grunt) {
 
 	// Load grunt tasks automatically
 	require('load-grunt-tasks')(grunt);
+
+	grunt.loadNpmTasks('grunt-connect-proxy');
 
 	// Time how long tasks take. Can help when optimizing build times
 	require('time-grunt')(grunt);
@@ -43,7 +51,23 @@ module.exports = function(grunt) {
 					ENV: {
 						name: 'samplestore',
 						host: 'http://www.samplestore.io',
-						apiEndpoint: '/api/v1'
+						apiEndpoint: '/api/v1',
+						apiConfig: {
+							appData: {
+								applicationId: 'd0b7324.angularapp.1.0.0.release',
+								sharedSecret: '46fa436008ea499f92e820924adfe02f'
+							},
+							storeData: {
+								'tenant': 9127,
+								'master-catalog': 1,
+								'catalog': 1,
+								'site': 11628,
+								'app-claims': '',
+								'currency': 'usd',
+								'locale': 'en-US'
+							},
+							storeDomain: '/storefront'
+						}
 					}
 				}
 			},
@@ -138,30 +162,41 @@ module.exports = function(grunt) {
 			livereload: {
 				options: {
 					open: true,
-					base: [
-						'.tmp',
-						'<%= yeoman.app %>/'
-					],
-					middleware: function(connect, options) {
-						var middlewares = [];
-						var directory = options.directory || options.base[options.base.length - 1];
-						if (!Array.isArray(options.base)) {
-							options.base = [options.base];
-						}
-						// Setup the proxy to the backend for api calls
-						//middlewares.push(require('grunt-connect-proxy/lib/utils').proxyRequest);
-						//enable modrewrite for html5mode
-						middlewares.push(require('connect-modrewrite')(['^[^\\.]*$ /index.html [L]']));
-						options.base.forEach(function(base) {
-							// Serve static files.
-							middlewares.push(connect.static(base));
-						});
-						// Make directory browse-able.
-						middlewares.push(connect.directory(directory));
-						return middlewares;
+					middleware: function (connect) {
+						return [
+							proxySnippet,
+							modRewrite([
+								'^/storefront/api/(.*)$ https://t9127-s11628.sandbox.mozu.com/api/$1 [P]',
+								'^/api/(.*)$ https://home.mozu.com/$1 [P]',
+								'^[^\\.]*$ /index.html [L]']),
+							connect.static('.tmp'),
+							connect().use(
+									'/bower_components',
+									connect.static('./bower_components')
+							),
+							connect.static(appConfig.app)
+						];
 					}
 				}
 			},
+			proxies   : [
+				{
+					context     : '/api/platform/applications/authtickets',
+					host        : 'home.mozu.com',
+					port        : 443,
+					https       : true,
+					xforward    : false,
+					changeOrigin: true
+				},
+				{
+					context     : '/storefront/api/*',
+					host        : 't9127-s11628.sandbox.mozu.com',
+					port        : 443,
+					https       : true,
+					xforward    : false,
+					changeOrigin: true
+				}
+			],
 			test: {
 				options: {
 					port: 9001,
@@ -545,6 +580,7 @@ module.exports = function(grunt) {
 			'compass:server',
 			'autoprefixer',
 			'htmlmin:server',
+			'configureProxies:server',
 			'connect:livereload',
 			'watch'
 		]);

@@ -1,3 +1,4 @@
+'use strict';
 /**
  * @ngdoc function
  * @name methodApp.controller:HeaderCtrl
@@ -6,11 +7,43 @@
  * Controller of the methodApp
  */
 
-angular.module('Volusion.controllers')
-	.controller('HeaderCtrl', ['$rootScope', '$scope', '$timeout', '$filter', 'translate', 'vnCart', 'ContentMgr', 'vnAppConfig', 'vnSearchManager', 'snapRemote',
-		function ($rootScope, $scope, $timeout, $filter, translate, vnCart, ContentMgr, vnAppConfig, vnSearchManager, snapRemote) {
+function setCategoryUrl(category) {
+	category.url = '/c/' + category.content.slug + '/' + category.categoryId;
+	category.name = category.content.name;
 
-			'use strict';
+	if (category.childrenCategories && category.childrenCategories.length > 0) {
+		angular.forEach(category.childrenCategories, function(childCategory) {
+			setCategoryUrl(childCategory);
+		});
+	}
+}
+
+angular.module('Volusion.controllers')
+	.controller('HeaderCtrl', [
+			'$rootScope',
+			'$scope',
+			'$timeout',
+			'$filter',
+			'translate',
+			'vnCart',
+			'ContentMgr',
+			'vnAppConfig',
+			'vnSearchManager',
+			'snapRemote',
+			'vnApiClient',
+		function (
+			$rootScope,
+			$scope,
+			$timeout,
+			$filter,
+			translate,
+			vnCart,
+			ContentMgr,
+			vnAppConfig,
+			vnSearchManager,
+			snapRemote,
+			vnApiClient) {
+
 
             $scope.showSearchMobile = true;
             $scope.showSearchDesktop = false;
@@ -18,6 +51,16 @@ angular.module('Volusion.controllers')
 
             translate.addParts('common');
 			translate.addParts('header');
+
+			vnApiClient.initialize().then(function() {
+				vnApiClient.api.Nav().get().then(function(response) {
+
+					angular.forEach(response.items, function(item) {
+						setCategoryUrl(item);
+					});
+					$scope.navCategoriesList = response.items;
+				});
+			}); 
 
 			$scope.getCartItemsCount = function () {
 				return vnCart.getCartItemsCount();

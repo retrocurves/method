@@ -25,23 +25,35 @@ angular.module('Volusion.controllers')
 			};
 
 			$scope.getCategory = function (newSlug, id) {
+
 				vnApiClient.api.Category().get(id).then(function (response) {
 					// Handle the category data
 					console.log(response);
 					$scope.category = response.data;
 
+					var content = $scope.category.content;
+                    angular.extend($rootScope.seo, {
+						metaTagTitle: content.metaTagTitle,
+						metaTagKeywords: content.metaTagKeywords,
+						metaTagDescription: content.metaTagDescription
 
+					});
 					vnProductParams.addCategory(response.data.categoryId);
 					$scope.queryProducts(response.data.categoryId);
 				});
 			};
 
 			$scope.queryProducts = function (id) {
-				var params = vnProductParams.getParamsObject();
+				//var params = vnProductParams.getParamsObject();
 				vnApiClient.api.Product().queryByCategoryId(id).then(function (response) {
-					console.log(response);
+					$scope.products = response.data.items;
+					angular.forEach($scope.products, function(product) {
+						product.url = '/p/' + product.productCode;
+					});
+					console.log($scope.products);
+					$scope.facets = response.data.facets;
 				});
-				vnApi.Product().get(params).$promise.then(function (response) {
+				/*vnApi.Product().get(params).$promise.then(function (response) {
 
 					$scope.products = response.data;
 					$scope.facets = response.facets;
@@ -50,7 +62,7 @@ angular.module('Volusion.controllers')
 
 					// Post response UI Setup
 					$scope.checkFacetsAndCategories(response.categories, response.facets);
-				});
+				});*/
 			};
 
 			$scope.toggleSearch = function () {
@@ -74,7 +86,9 @@ angular.module('Volusion.controllers')
 
 			$scope.$on('$viewContentLoaded', function () {
 				vnAppRoute.setRouteStrategy('category');
-				$scope.getCategory($routeParams.slug, $routeParams.id);
+				vnApiClient.initialize().then(function() {
+					$scope.getCategory($routeParams.slug, $routeParams.id);
+				});
 			});
 		}
 	]);

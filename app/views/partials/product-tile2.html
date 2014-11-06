@@ -1,0 +1,21 @@
+<div class="th-product">
+
+	<div class="th-product__image">
+		<a data-ng-href="{{ product.url }}">
+			<img ng-src="{{ product.content.productImages[0].imageUrl }}"
+				 class="img-responsive" alt="{{ product.content.productName }}">
+		</a>
+	</div>
+	<div class="th-product__name">
+		<a data-ng-href="{{product.url}}">{{product.content.productName}}</a>
+	</div>
+	<div class="th-product__price">
+		<span class="th-price--reg" data-ng-show="product.price.catalogListPrice > 0">
+			<span class="th-price" data-ng-class="{strike: product.price.price > 0}">
+				{{product.price.catalogListPrice | currency}}</span>
+			<span class="th-price-text th-text-left" data-translate="product.regularPriceLabel"></span></span>
+		<span class="th-price--now" data-ng-show="product.price.price > 0">
+			<span class="th-price">{{product.price.price | currency}}</span>
+			<span class="th-price-text" data-translate="product.nowPriceLabel"></span></span>
+	</div>
+</div>

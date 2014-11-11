@@ -38,14 +38,17 @@ angular.module('Volusion.controllers')
 						metaTagDescription: content.metaTagDescription
 
 					});
-					vnProductParams.addCategory(response.data.categoryId);
+					vnProductParams.setPrimaryCategoryId(response.data.categoryId);
+					vnProductParams.setPageSize(themeSettings.getPageSize());
+					vnProductParams.setPage(1);
+
 					$scope.queryProducts();
 				});
 			};
 
 			$scope.queryProducts = function () {
 				//var params = vnProductParams.getParamsObject();
-				vnApiClient.api.Product().queryByCategoryId(id, { pageSize: themeSettings.getPageSize(), currentPageIndex: 0 }).then(function (response) {
+				vnApiClient.api.Product().queryByCategoryId().then(function (response) {
 					console.log(response);
 					$scope.products = response.data.items;
 					angular.forEach($scope.products, function(product) {
@@ -55,7 +58,7 @@ angular.module('Volusion.controllers')
 					$scope.facets = response.data.facets;
 					$scope.cursor = {
 						totalPages: response.data.pageCount,
-						currentPage: response.data.startIndex + 1
+						currentPage: Math.ceil ((response.data.startIndex + 1) / themeSettings.getPageSize())
 					};
 				});
 				/*vnApi.Product().get(params).$promise.then(function (response) {

@@ -1,7 +1,7 @@
 angular.module('Volusion.controllers')
 	.controller('CategoryCtrl', [
-		'$q', '$scope', '$rootScope', '$routeParams', '$location', '$route', 'vnApi', 'vnApiClient', 'themeSettings', 'vnProductParams', 'vnAppRoute', 'ContentMgr',
-		function ($q, $scope, $rootScope, $routeParams, $location, $route, vnApi, vnApiClient, themeSettings, vnProductParams, vnAppRoute, ContentMgr) {
+		'$q', '$scope', '$rootScope', '$routeParams', '$location', '$route', 'vnApi', 'vnApiClient', 'themeSettings', 'vnProductParams', 'vnAppRoute', 'ContentMgr', 'vnViewPortWatch',
+		function ($q, $scope, $rootScope, $routeParams, $location, $route, vnApi, vnApiClient, themeSettings, vnProductParams, vnAppRoute, ContentMgr, vnViewPortWatch) {
 
 			'use strict';
 
@@ -56,6 +56,7 @@ angular.module('Volusion.controllers')
 					});
 					console.log($scope.products);
 					$scope.facets = response.data.facets;
+					$scope.hasFacetsOrCategories = response.data.facets.length > 0;
 					$scope.cursor = {
 						totalPages: response.data.pageCount,
 						currentPage: Math.ceil ((response.data.startIndex + 1) / themeSettings.getPageSize())
@@ -98,5 +99,42 @@ angular.module('Volusion.controllers')
 					$scope.getCategory($routeParams.slug, $routeParams.id);
 				});
 			});
+
+			vnViewPortWatch.setBreakpoints([{
+				name: 'Non-Desktop',
+				mediaQuery: 'screen and (max-width:767px)',
+
+				setup  : function () {
+					$scope.showApplyButton = false;
+					$scope.mobileDisplay = true;
+					$scope.showMobileSearch = false;
+					$scope.isMobileAndVisible = false;
+					$scope.isMobileAndHidden = true;
+					$scope.categoryAccordiansOpen = true;
+					$scope.priceAccordiansOpen = true;
+					$scope.sortAccordianIsOpen = true;
+				},
+				onUnmatch: function () {
+					$scope.showApplyButton = false;
+					$scope.mobileDisplay = true; // default cats and facets to open
+					$scope.showMobileSearch = false;
+					$scope.isMobileAndVisible = false;
+					$scope.isMobileAndHidden = true;
+					$scope.categoryAccordiansOpen = true;
+					$scope.priceAccordiansOpen = true;
+					$scope.sortAccordianIsOpen = true;
+				},
+				// transitioning to mobile mode
+				onMatch  : function () {
+					$scope.showApplyButton = true;
+					$scope.mobileDisplay = false; // default cats and facets default to closed
+					$scope.showMobileSearch = true;
+					$scope.isMobileAndVisible = false;
+					$scope.isMobileAndHidden = true;
+					$scope.categoryAccordiansOpen = false;
+					$scope.priceAccordiansOpen = false;
+					$scope.sortAccordianIsOpen = false;
+				}
+			}]);
 		}
 	]);

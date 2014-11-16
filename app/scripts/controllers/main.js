@@ -1,6 +1,7 @@
+/*globals Firebase*/
 angular.module('Volusion.controllers')
-	.controller('MainCtrl', ['$scope', '$rootScope', '$location', '$window', '$timeout', 'vnApi', 'themeSettings', 'vnSiteConfig', 'vnImagePreloader',
-		function ($scope, $rootScope, $location, $window, $timeout, vnApi, themeSettings, vnSiteConfig, vnImagePreloader) {
+	.controller('MainCtrl', ['$scope', '$rootScope', '$location', '$window', '$timeout', 'vnApi', 'themeSettings', 'vnSiteConfig', 'vnImagePreloader', 'Sites', '$firebase',
+		function ($scope, $rootScope, $location, $window, $timeout, vnApi, themeSettings, vnSiteConfig, vnImagePreloader, Sites, $firebase) {
 
 			'use strict';
 
@@ -47,17 +48,25 @@ angular.module('Volusion.controllers')
 				defaultSizeY: 1, // the default height of a gridster item, if not specified
 				resizable: {
 					enabled: true,
-					handles: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw']//,
+					handles: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw'],
 					//start: function(event, $element, widget) {}, // optional callback fired when resize is started,
 					//resize: function(event, $element, widget) {}, // optional callback fired when item is resized,
-					//stop: function(event, $element, widget) {} // optional callback fired when item is finished resizing
+					stop: function() {
+						console.log('fired resizable stop');
+						Sites.saveGridsterLayout();
+						//$scope.staticSites.$save(); // THIS NEEDS TO BE A FACTORY THAT WE CAN CALL - WON'T WORK LIKE THIS!
+					} // optional callback fired when item is finished resizing
 				},
 				draggable: {
 					enabled: true, // whether dragging items is supported
-					handle: '.my-class'//, // optional selector for resize handle
+					handle: '.my-class', // optional selector for resize handle
 					//start: function(event, $element, widget) {}, // optional callback fired when drag is started,
 					//drag: function(event, $element, widget) {}, // optional callback fired when item is moved,
-					//stop: function(event, $element, widget) {} // optional callback fired when item is finished dragging
+					stop: function() {
+						console.log('fired draggable stop');
+						Sites.saveGridsterLayout();
+						//$scope.staticSites.$save(); // THIS NEEDS TO BE A FACTORY THAT WE CAN CALL - WON'T WORK LIKE THIS!
+					} // optional callback fired when item is finished dragging
 				}
 			};
 
@@ -65,57 +74,448 @@ angular.module('Volusion.controllers')
 			// In most cases the sorting should be by row ASC, col ASC
 
 			// these map directly to gridsterItem directive options
+
+			//TODO: Create a positioning for each device, and remove the generic one. A gridster layout for each device.
+			//Example positioning model added to the first item below... including disabling a widget on a specific viewport.
+
+			//NOTE: this below is a grid. There will be a grid on each page. All pages will be made up of grids and grids only (ideally).
+
+		// now we can use $firebase to synchronize data between clients and the server!
+		//var siteObject = Sites.getSite('monkeypants');
+		// var ref = new Firebase('https://phoenix-sites.firebaseio.com/sites');
+		// var sync = $firebase(ref);
+
+		// /* jshint ignore:start */
+		// // replace the entire node with new data
+		// sync.$set(
+		// 	{
+		//     "monkeypants": {
+		//       "name": "Monkey Pants",
+		//       "activeTheme": "method",
+		//       "pageTemplates": {
+		//         "home": {
+		//           "gridsterLayout": [
+		//             {
+		//               "name": "Carousel",
+		//               "type": "carousel",
+		//               "sizeX": 2,
+		//               "sizeY": 4,
+		//               "row": 0,
+		//               "col": 0,
+		//               "position": {
+		//                 "phone": {
+		//                   "sizeX": 2,
+		//                   "sizeY": 4,
+		//                   "row": 0,
+		//                   "col": 0,
+		//                   "disabled": true
+		//                 },
+		//                 "tablet": {
+		//                   "sizeX": 2,
+		//                   "sizeY": 4,
+		//                   "row": 0,
+		//                   "col": 0,
+		//                   "disabled": false
+		//                 },
+		//                 "desktop": {
+		//                   "sizeX": 2,
+		//                   "sizeY": 4,
+		//                   "row": 0,
+		//                   "col": 0,
+		//                   "disabled": false
+		//                 }
+		//               },
+		//               "content": "<div class=\"vn-slider\"><carousel data-interval=\"item.settings.interval\"><slide data-ng-repeat=\"slide in item.settings.slides\" data-active=\"slide.active\"><a href title=\"{{slide.headline}} - {{slide.subHeadline}}\"><div class=\"vn-slider__slide\" data-ng-style=\"{'background-image':'url({{slide.imgUrl}})' }\"></div></a></slide></carousel></div>",
+		//               "settings": {
+		//                 "isEnabled": true,
+		//                 "interval": 4000,
+		//                 "slides": [
+		//                   {
+		//                     "imgUrl": "http://design16.volusion.com/v/theme-engine/method/slide1.jpg",
+		//                     "headline": "NewYearSaleathon",
+		//                     "subHeadline": "Save20%offstorewidewithcouponcodeNEWYEAR",
+		//                     "linksTo": "/all-products"
+		//                   },
+		//                   {
+		//                     "imgUrl": "http://design16.volusion.com/v/theme-engine/method/slide2.jpg",
+		//                     "headline": "NewSunriseCollection",
+		//                     "subHeadline": "Wakeuptosomethinggood",
+		//                     "linksTo": "/all-products"
+		//                   },
+		//                   {
+		//                     "imgUrl": "http://design16.volusion.com/v/theme-engine/method/slide3.jpg",
+		//                     "headline": "MiamiFashion",
+		//                     "subHeadline": null,
+		//                     "linksTo": "/all-products"
+		//                   },
+		//                   {
+		//                     "imgUrl": "http://design16.volusion.com/v/theme-engine/method/slide4.jpg",
+		//                     "headline": "MiamiFashion",
+		//                     "subHeadline": null,
+		//                     "linksTo": "/all-products"
+		//                   }
+		//                 ]
+		//               }
+		//             },
+		//             {
+		//               "name": "Image",
+		//               "type": "image",
+		//               "sizeX": 1,
+		//               "sizeY": 4,
+		//               "row": 0,
+		//               "col": 2,
+		//               "content": "<a data-ng-href=\"\"><img ng-src=\"{{item.settings.imgUrl}}\" class=\"img-responsive\" alt=\"\"></a>",
+		//               "settings": {
+		//                 "imgUrl": "/images/homepage/tile6.jpg"
+		//               }
+		//             },
+		//             {
+		//               "name": "Image",
+		//               "type": "image",
+		//               "sizeX": 1,
+		//               "sizeY": 4,
+		//               "row": 4,
+		//               "col": 0,
+		//               "content": "<a data-ng-href=\"\"><img ng-src=\"{{item.settings.imgUrl}}\" class=\"img-responsive\" alt=\"\"></a>",
+		//               "settings": {
+		//                 "imgUrl": "/images/homepage/tile1.jpg"
+		//               }
+		//             },
+		//             {
+		//               "name": "HTML",
+		//               "type": "html",
+		//               "sizeX": 1,
+		//               "sizeY": 4,
+		//               "row": 4,
+		//               "col": 1,
+		//               "content": "<div ng-bind-html=\"item.settings.html | vnLegacyLinkify | html\"></div>",
+		//               "settings": {
+		//                 "html": "<h1>Super Sale Folks!</h1>"
+		//               }
+		//             },
+		//             {
+		//               "name": "Image",
+		//               "type": "image",
+		//               "sizeX": 1,
+		//               "sizeY": 4,
+		//               "row": 4,
+		//               "col": 2,
+		//               "content": "<a data-ng-href=\"\"><img ng-src=\"{{item.settings.imgUrl}}\" class=\"img-responsive\" alt=\"\"></a>",
+		//               "settings": {
+		//                 "imgUrl": "/images/homepage/tile3.jpg"
+		//               }
+		//             },
+		//             {
+		//               "name": "Image",
+		//               "type": "image",
+		//               "sizeX": 1,
+		//               "sizeY": 2,
+		//               "row": 8,
+		//               "col": 0,
+		//               "content": "<a data-ng-href=\"\"><img ng-src=\"{{item.settings.imgUrl}}\" class=\"img-responsive\" alt=\"\"></a>",
+		//               "settings": {
+		//                 "imgUrl": "/images/homepage/tile4.jpg"
+		//               }
+		//             },
+		//             {
+		//               "name": "Image",
+		//               "type": "image",
+		//               "sizeX": 2,
+		//               "sizeY": 2,
+		//               "row": 8,
+		//               "col": 1,
+		//               "content": "<a data-ng-href=\"\"><img ng-src=\"{{item.settings.imgUrl}}\" class=\"img-responsive\" alt=\"\"></a>",
+		//               "settings": {
+		//                 "imgUrl": "/images/homepage/tile5.jpg"
+		//               }
+		//             }
+		//           ]
+		//         }
+		//       }
+		//     }
+		//   }
+		// );
+		// /* jshint ignore:end */
+
+		// create a synchronized object, all server changes are downloaded in realtime
+		// var siteObject = sync.$asObject();
+
+		//changes made to realtimeSite affects both the realtimeSite object and staticSite object on all devices & browsers in the world in realtime.
+		//siteObject.$bindTo($scope, 'realtimeSite');
+
+		//changes made to staticSite happen in a single browser and doesn't affect the local (or remote) realtimeSite object. Nobody sees your changes until you click staticSite.$save();
+		//$scope.staticSite = siteObject;
+        //
+		//	$scope.$watch('staticSite', function (newValue) {
+		//		console.log('static site changed', newValue.pageTemplates.home.gridsterLayout[2].row, newValue.pageTemplates.home.gridsterLayout[2].col);
+		//	}, true);
+
+		$scope.gridsterLayout = Sites.getGridsterLayout('monkeypants');
+
+		$scope.$watch('gridsterLayout', function (newValue) {
+			console.log('gridsterLayout changed', newValue);
+		}, true);
+
+		//HACK:Since firebase sends updates in pieces, Gridster get's invalid array updates first and tries to correct them.
+		//So a half second after any updates come in from Firebase, check if we're still in sync with Firebase.
+		var newRef = new Firebase('https://phoenix-sites.firebaseio.com/sites/monkeypants/pageTemplates/home/gridsterLayout');
+		$scope.newFB = $firebase(newRef).$asArray();
+		$scope.$watch('newFB', function () {
+			//TODO: Wrap the following in a $timeout()
+			$timeout(function (){
+				if (angular.toJson($scope.gridsterLayout) !== angular.toJson($scope.newFB)) {
+					console.log('FB updates came in, and gridster is out of sync. Resetting gridsterLayout', $scope.gridsterLayout, $scope.newFB);
+					$scope.gridsterLayout = Sites.getGridsterLayout('monkeypants');
+				}
+			}, 500);
+		}, true);
+
+
+
+
+			$scope.themes = {
+				mehod: {
+					name: 'Method'
+				},
+				gizmo: {
+					name: 'Gizmo'
+				}
+			};
+
+			$scope.widgets = {
+				html: {
+					content: '<div ng-bind-html="item.settings.html | vnLegacyLinkify | html"></div>',
+					settings: {
+						html: '<h1>Super Sale Folks!</h1>'
+					}
+				},
+				image: {
+					content: '<a data-ng-href=""><img ng-src="{{item.settings.imgUrl}}" class="img-responsive" alt=""></a>',
+					settings: {
+						imgUrl: '/images/homepage/tile6.jpg'
+					}
+				}
+			};
+
+			$scope.sitesOld = {
+				monkeypants : {
+					name: 'Monkey Pants',
+					activeTheme: 'method',
+					pageTemplates: {
+						home: {
+							gridsterLayout: [
+								{
+									name: 'Carousel',
+									type: 'carousel',
+									sizeX: 2, sizeY: 4, row: 0, col: 0,
+									position: {
+										phone: { sizeX: 2, sizeY: 4, row: 0, col: 0, disabled: true},
+										tablet: { sizeX: 2, sizeY: 4, row: 0, col: 0, disabled: false},
+										desktop: { sizeX: 2, sizeY: 4, row: 0, col: 0, disabled: false}
+									},
+									content: '<div class="vn-slider">' +
+														'<carousel data-interval="item.settings.interval">' +
+															'<slide data-ng-repeat="slide in item.settings.slides" data-active="slide.active">' +
+																'<a href title="{{slide.headline}} - {{slide.subHeadline}}">' +
+																	'<div class="vn-slider__slide" data-ng-style="{\'background-image\':\'url({{slide.imgUrl}})\' }"></div>' +
+																'</a>' +
+															'</slide>' +
+														'</carousel>' +
+													'</div>',
+									settings: {
+										isEnabled: true,
+										interval : 4000,
+										slides   : [
+											{
+												imgUrl     : 'http://design16.volusion.com/v/theme-engine/method/slide1.jpg',
+												headline   : 'NewYearSaleathon',
+												subHeadline: 'Save20%offstorewidewithcouponcodeNEWYEAR',
+												linksTo    : '/all-products'
+											},
+											{
+												imgUrl     : 'http://design16.volusion.com/v/theme-engine/method/slide2.jpg',
+												headline   : 'NewSunriseCollection',
+												subHeadline: 'Wakeuptosomethinggood',
+												linksTo    : '/all-products'
+											},
+											{
+												imgUrl     : 'http://design16.volusion.com/v/theme-engine/method/slide3.jpg',
+												headline   : 'MiamiFashion',
+												subHeadline: null,
+												linksTo    : '/all-products'
+											},
+											{
+												imgUrl     : 'http://design16.volusion.com/v/theme-engine/method/slide4.jpg',
+												headline   : 'MiamiFashion',
+												subHeadline: null,
+												linksTo    : '/all-products'
+											}
+										]
+									}
+								},
+								{
+									name: 'Image',
+									type: 'image',
+									sizeX: 1, sizeY: 4, row: 0, col: 2,
+									content: '<a data-ng-href=""><img ng-src="{{item.settings.imgUrl}}" class="img-responsive" alt=""></a>',
+									settings: {
+										imgUrl: '/images/homepage/tile6.jpg'
+									}
+								},
+								{
+									name: 'Image',
+									type: 'image',
+									sizeX: 1, sizeY: 4, row: 4, col: 0,
+									content: '<a data-ng-href=""><img ng-src="{{item.settings.imgUrl}}" class="img-responsive" alt=""></a>',
+									settings: {
+										imgUrl: '/images/homepage/tile1.jpg'
+									}
+								},
+								{
+									name: 'HTML',
+									type: 'html',
+									sizeX: 1, sizeY: 4, row: 4, col: 1,
+									content: '<div ng-bind-html="item.settings.html | vnLegacyLinkify | html"></div>',
+									settings: {
+										html: '<h1>Super Sale Folks!</h1>'
+									}
+								},
+								{
+									name: 'Image',
+									type: 'image',
+									sizeX: 1, sizeY: 4, row: 4, col: 2,
+									content: '<a data-ng-href=""><img ng-src="{{item.settings.imgUrl}}" class="img-responsive" alt=""></a>',
+									settings: {
+										imgUrl: '/images/homepage/tile3.jpg'
+									}
+								},
+								{
+									name: 'Image',
+									type: 'image',
+									sizeX: 1, sizeY: 2, row: 8, col: 0,
+									content: '<a data-ng-href=""><img ng-src="{{item.settings.imgUrl}}" class="img-responsive" alt=""></a>',
+									settings: {
+										imgUrl: '/images/homepage/tile4.jpg'
+									}
+								},
+								{
+									name: 'Image',
+									type: 'image',
+									sizeX: 2, sizeY: 2, row: 8, col: 1,
+									content: '<a data-ng-href=""><img ng-src="{{item.settings.imgUrl}}" class="img-responsive" alt=""></a>',
+									settings: {
+										imgUrl: '/images/homepage/tile5.jpg'
+									}
+								}
+							]
+						}
+					}
+				}
+			};
+
 			$scope.standardItems = [
 				{
+					name: 'Carousel',
+					type: 'carousel',
 					sizeX: 2, sizeY: 4, row: 0, col: 0,
-					content: '<div data-ng-if="themeSettings.pages.home.slider.isEnabled">' +
-								'<div class="vn-slider">' +
-									'<carousel data-interval="themeSettings.pages.home.slider.interval">' +
-										'<slide data-ng-repeat="slide in themeSettings.pages.home.slider.slides" data-active="slide.active">' +
-											'<a href title="{{slide.headline}} - {{slide.subHeadline}}">' +
-												'<div class="vn-slider__slide" data-ng-style="{\'background-image\':\'url({{slide.imageUrl}})\' }"></div>' +
-											'</a>' +
-										'</slide>' +
-									'</carousel>' +
-								'</div>' +
-							'</div>'
+					position: {
+						phone: { sizeX: 2, sizeY: 4, row: 0, col: 0, disabled: true},
+						tablet: { sizeX: 2, sizeY: 4, row: 0, col: 0, disabled: false},
+						desktop: { sizeX: 2, sizeY: 4, row: 0, col: 0, disabled: false}
+					},
+					content: '<div class="vn-slider">' +
+										'<carousel data-interval="item.settings.interval">' +
+											'<slide data-ng-repeat="slide in item.settings.slides" data-active="slide.active">' +
+												'<a href title="{{slide.headline}} - {{slide.subHeadline}}">' +
+													'<div class="vn-slider__slide" data-ng-style="{\'background-image\':\'url({{slide.imgUrl}})\' }"></div>' +
+												'</a>' +
+											'</slide>' +
+										'</carousel>' +
+									'</div>',
+					settings: {
+						isEnabled: true,
+						interval : 4000,
+						slides   : [
+							{
+								imgUrl     : 'http://design16.volusion.com/v/theme-engine/method/slide1.jpg',
+								headline   : 'NewYearSaleathon',
+								subHeadline: 'Save20%offstorewidewithcouponcodeNEWYEAR',
+								linksTo    : '/all-products'
+							},
+							{
+								imgUrl     : 'http://design16.volusion.com/v/theme-engine/method/slide2.jpg',
+								headline   : 'NewSunriseCollection',
+								subHeadline: 'Wakeuptosomethinggood',
+								linksTo    : '/all-products'
+							},
+							{
+								imgUrl     : 'http://design16.volusion.com/v/theme-engine/method/slide3.jpg',
+								headline   : 'MiamiFashion',
+								subHeadline: null,
+								linksTo    : '/all-products'
+							},
+							{
+								imgUrl     : 'http://design16.volusion.com/v/theme-engine/method/slide4.jpg',
+								headline   : 'MiamiFashion',
+								subHeadline: null,
+								linksTo    : '/all-products'
+							}
+						]
+					}
 				},
 				{
+					name: 'Image',
+					type: 'image',
 					sizeX: 1, sizeY: 4, row: 0, col: 2,
-					content: '<a data-ng-href="" class="th-promo th-b3"><img ng-src="{{themeSettings.pages.home.tiles.tiles.tile6.imageUrl}}" class="img-responsive" alt=""></a>'
+					content: '<a data-ng-href=""><img ng-src="{{item.settings.imgUrl}}" class="img-responsive" alt=""></a>',
+					settings: {
+						imgUrl: '/images/homepage/tile6.jpg'
+					}
 				},
 				{
+					name: 'Image',
+					type: 'image',
 					sizeX: 1, sizeY: 4, row: 4, col: 0,
-					content: '<a data-ng-href="" class="th-promo th-p1"><img ng-src="{{themeSettings.pages.home.tiles.tiles.tile1.imageUrl}}" class="img-responsive" alt="" /></a>'
+					content: '<a data-ng-href=""><img ng-src="{{item.settings.imgUrl}}" class="img-responsive" alt=""></a>',
+					settings: {
+						imgUrl: '/images/homepage/tile1.jpg'
+					}
 				},
 				{
+					name: 'HTML',
+					type: 'html',
 					sizeX: 1, sizeY: 4, row: 4, col: 1,
-					content: '<a data-ng-href="" class="th-promo th-p2">' +
-								'<div class="th-title">Now Stocking Herschel Bags.</div>' +
-									'<div class="th-text">' +
-										'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.' +
-										'<div class="th-link" data-translate="home.shopNow">Shop Now &gt;</div>' +
-									'</div>' +
-								'<img data-ng-src="{{themeSettings.pages.home.tiles.tiles.tile2.imageUrl}}" class="img-responsive" alt="" />' +
-							'</a>'
+					content: '<div ng-bind-html="item.settings.html | vnLegacyLinkify | html"></div>',
+					settings: {
+						html: '<h1>Super Sale Folks!</h1>'
+					}
 				},
 				{
+					name: 'Image',
+					type: 'image',
 					sizeX: 1, sizeY: 4, row: 4, col: 2,
-					content: '<a data-ng-href="" class="th-promo th-p3"><img ng-src="{{themeSettings.pages.home.tiles.tiles.tile3.imageUrl}}" class="img-responsive" alt="" /></a>' },
-				{
-					sizeX: 1, sizeY: 2, row: 8, col: 0,
-					content: '<a data-ng-href="" class="th-promo th-b1"><img data-ng-src="{{themeSettings.pages.home.tiles.tiles.tile4.imageUrl}}" class="img-responsive" alt="" /><span class="th-category">New Sunglasses &gt;</span></a>'
+					content: '<a data-ng-href=""><img ng-src="{{item.settings.imgUrl}}" class="img-responsive" alt=""></a>',
+					settings: {
+						imgUrl: '/images/homepage/tile3.jpg'
+					}
 				},
 				{
+					name: 'Image',
+					type: 'image',
+					sizeX: 1, sizeY: 2, row: 8, col: 0,
+					content: '<a data-ng-href=""><img ng-src="{{item.settings.imgUrl}}" class="img-responsive" alt=""></a>',
+					settings: {
+						imgUrl: '/images/homepage/tile4.jpg'
+					}
+				},
+				{
+					name: 'Image',
+					type: 'image',
 					sizeX: 2, sizeY: 2, row: 8, col: 1,
-					content: '<a data-ng-href="" class="th-promo th-b2"><img data-ng-src="{{themeSettings.pages.home.tiles.tiles.tile5.imageUrl}}" class="img-responsive" alt="" /><span class="th-category">Townsend Shoes &gt;</span></a>'
+					content: '<a data-ng-href=""><img ng-src="{{item.settings.imgUrl}}" class="img-responsive" alt=""></a>',
+					settings: {
+						imgUrl: '/images/homepage/tile5.jpg'
+					}
 				}
-
 			];
-
-			$scope.$watch('standardItems', function(standardItems){
-				// one of the items changed
-				console.log(standardItems);
-			}, true);
-
 		}]);

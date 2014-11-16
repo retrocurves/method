@@ -18,6 +18,7 @@ angular.module('methodApp', [
 	'snap',
 	'textAngular',
 	'gridster',
+	'firebase',
 
 	// Volusion modules
 	'config',

@@ -3,7 +3,7 @@
 <ul>
 	<li ng-repeat="item in gridsterLayout">
 	<span style="font-size:130%">
-	<input type="text" ng-model="item.name">
+	<input type="text" ng-model="item.name" ng-change="gridsterLayout.$save(item)">
 	</span>
 	(size: {{item.sizeX}} x {{item.sizeY}} | row: {{item.row}} | col: {{item.col}})
 
@@ -36,16 +36,6 @@
 	</li>
 </ul>
 <hr />
-
-<!--<hr>-->
-<!--<h1>newFB</h1>-->
-<!--{{newFB}}-->
-
-<hr>
-		{{gridsterLayout}}
-<h1>{{gridsterLayout[2].row}} x
-{{gridsterLayout[2].col}}</h1>
-
 
 <div class="container th-home-content">
 	<div gridster="gridsterOpts">

@@ -37,7 +37,7 @@ angular.module('Volusion.controllers')
 				colWidth: 'auto', // can be an integer or 'auto'.  'auto' uses the pixel width of the element divided by 'columns'
 				rowHeight: 120, // can be an integer or 'match'.  Match uses the colWidth, giving you square widgets.
 				margins: [10, 10], // the pixel distance between each widget
-				outerMargin: false, // whether margins apply to outer edges of the grid
+				outerMargin: true, // whether margins apply to outer edges of the grid
 				isMobile: false, // stacks the grid items if true
 				mobileBreakPoint: 600, // if the screen is not wider that this, remove the grid layout and stack the items
 				mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
@@ -257,17 +257,18 @@ angular.module('Volusion.controllers')
 		}, true);
 
 		//HACK:Since firebase sends updates in pieces, Gridster get's invalid array updates first and tries to correct them.
-		//So a half second after any updates come in from Firebase, check if we're still in sync with Firebase.
+		//So X seconds after any updates come in from Firebase, check if we're still in sync with Firebase.
 		var newRef = new Firebase('https://phoenix-sites.firebaseio.com/sites/monkeypants/pageTemplates/home/gridsterLayout');
 		$scope.newFB = $firebase(newRef).$asArray();
 		$scope.$watch('newFB', function () {
-			//TODO: Wrap the following in a $timeout()
 			$timeout(function (){
-				if (angular.toJson($scope.gridsterLayout) !== angular.toJson($scope.newFB)) {
-					console.log('FB updates came in, and gridster is out of sync. Resetting gridsterLayout', $scope.gridsterLayout, $scope.newFB);
+				var tempPureJsonGridsterLayout = angular.toJson($scope.gridsterLayout);
+				var tempPureJsonNewFB = angular.toJson($scope.newFB);
+				if (tempPureJsonGridsterLayout !== tempPureJsonNewFB) {
+					console.log('!!!!!!!! FB updates came in, and gridster is out of sync. Resetting gridsterLayout', tempPureJsonGridsterLayout, tempPureJsonNewFB);
 					$scope.gridsterLayout = Sites.getGridsterLayout('monkeypants');
 				}
-			}, 500);
+			}, 5000);
 		}, true);
 
 

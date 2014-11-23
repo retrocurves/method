@@ -83,14 +83,14 @@ module.exports = function(grunt) {
 				files: ['<%= yeoman.app %>/*.html', '<%= yeoman.app %>/views/**/*.html'],
 				tasks: ['htmlmin:server'],
 				options: {
-					livereload: true
+					livereload: '<%= connect.options.livereload %>'
 				}
 			},
 			js: {
 				files: ['<%= yeoman.app %>/scripts/{,*/}*.js', '<%= yeoman.app %>/bower_components/vn-toolbox-common/dist/vn-toolbox-common.js'],
 				tasks: ['newer:jshint:all'],
 				options: {
-					livereload: true
+					livereload: '<%= connect.options.livereload %>'
 				}
 			},
 			jsTest: {
@@ -125,10 +125,10 @@ module.exports = function(grunt) {
 		// The actual grunt server settings
 		connect: {
 			options: {
-				port: 9000,
+				port: 8000,
 				// Change this to '0.0.0.0' to access the server from outside.
 				hostname: 'localhost',
-				livereload: 35729
+				livereload: 35730
 			},
 			rules: [
 				{ from: '^/(bower_components|fonts|images|scripts|styles|translations|views)(/.*)$', to: '/$1$2' },

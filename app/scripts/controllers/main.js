@@ -1,9 +1,26 @@
 /*globals Firebase*/
 angular.module('Volusion.controllers')
-	.controller('MainCtrl', ['$scope', '$rootScope', '$location', '$window', '$timeout', 'vnApi', 'themeSettings', 'vnSiteConfig', 'vnImagePreloader', 'Sites', '$firebase',
-		function ($scope, $rootScope, $location, $window, $timeout, vnApi, themeSettings, vnSiteConfig, vnImagePreloader, Sites, $firebase) {
+	.controller('MainCtrl', ['$scope', '$rootScope', '$location', '$window', '$timeout', 'vnApi', 'themeSettings', 'vnSiteConfig', 'vnImagePreloader', 'Sites', '$firebase', '$http', 'socket',
+		function ($scope, $rootScope, $location, $window, $timeout, vnApi, themeSettings, vnSiteConfig, vnImagePreloader, Sites, $firebase, $http, socket) {
 
 			'use strict';
+
+			//----------------------------------------------
+			//Sites
+			$scope.sites = [];
+
+			$http.get('http://localhost:9000/api/sites?hostname=monkeypants').success(function(sites) {
+				$scope.sites = sites;
+				//FYI: syncUpdates will not work on an object; Needs to be an array. Or fix the syncUpdates factory to support objects.
+				socket.syncUpdates('site', $scope.sites);
+			});
+
+			$scope.updateSites = function() {
+				var jsonToSave = angular.fromJson(angular.toJson($scope.sites[0])); //strip off all the angular junk
+				console.log('jsonToSave',jsonToSave)
+				$http.put('http://localhost:9000/api/sites/' + $scope.sites[0]._id, jsonToSave);
+			};
+
 
 			$rootScope.seo = {};
 

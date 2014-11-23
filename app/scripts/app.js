@@ -19,6 +19,8 @@ angular.module('methodApp', [
 	'textAngular',
 	'gridster',
 	'firebase',
+	'btford.socket-io',
+
 
 	// Volusion modules
 	'config',

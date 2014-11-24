@@ -1,7 +1,7 @@
 angular.module('Volusion.controllers')
 	.controller('CategoryCtrl', [
-		'$q', '$scope', '$rootScope', '$routeParams', '$location', '$route', 'vnApi', 'vnApiClient', 'themeSettings', 'vnProductParams', 'vnAppRoute', 'ContentMgr', 'vnViewPortWatch',
-		function ($q, $scope, $rootScope, $routeParams, $location, $route, vnApi, vnApiClient, themeSettings, vnProductParams, vnAppRoute, ContentMgr, vnViewPortWatch) {
+		'$q', '$scope', '$rootScope', '$routeParams', '$location', '$route', 'vnApi', 'vnApiClient', 'themeSettings', 'vnProductParams', 'vnAppRoute', 'ContentMgr', 'vnViewPortWatch', 'lodash',
+		function ($q, $scope, $rootScope, $routeParams, $location, $route, vnApi, vnApiClient, themeSettings, vnProductParams, vnAppRoute, ContentMgr, vnViewPortWatch, lodash) {
 
 			'use strict';
 
@@ -49,13 +49,16 @@ angular.module('Volusion.controllers')
 			$scope.queryProducts = function () {
 				//var params = vnProductParams.getParamsObject();
 				vnApiClient.api.Product().queryByCategoryId().then(function (response) {
-					console.log(response);
+
 					$scope.products = response.data.items;
 					angular.forEach($scope.products, function(product) {
 						product.url = '/p/' + product.productCode;
 					});
-					console.log($scope.products);
-					$scope.facets = response.data.facets;
+
+					$scope.facets = lodash.filter(response.data.facets, function(facet) {
+						return facet.facetType === 'Value' && facet.values.length > 0;
+					});
+
 					$scope.hasFacetsOrCategories = response.data.facets.length > 0;
 					$scope.cursor = {
 						totalPages: response.data.pageCount,

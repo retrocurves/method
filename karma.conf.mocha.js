@@ -33,6 +33,7 @@ module.exports = function(config) {
 			'app/bower_components/angular-seo/angular-seo.js',
 			'app/bower_components/angulartics/dist/angulartics.min.js',
 			'app/bower_components/enquire/dist/enquire.js',
+			'app//bower_components/ng-lodash/build/ng-lodash.js',
 			'app/bower_components/textAngular/dist/textAngular.min.js',
 			'app/bower_components/angular-ui-bootstrap-bower/ui-bootstrap.js',
 			'app/bower_components/vn-toolbox-common/dist/vn-toolbox-common.js',

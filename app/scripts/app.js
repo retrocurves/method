@@ -11,6 +11,7 @@ angular.module('methodApp', [
 	'ngSanitize',
 	'ngRoute',
 	'ngTouch',
+	'ngLodash',
 
 	// Third party modules
 	'ui.bootstrap',

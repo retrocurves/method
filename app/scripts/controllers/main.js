@@ -17,7 +17,8 @@ angular.module('Volusion.controllers')
 
 			$scope.updateSites = function() {
 				var jsonToSave = angular.fromJson(angular.toJson($scope.sites[0])); //strip off all the angular junk
-				console.log('jsonToSave',jsonToSave)
+				//delete jsonToSave.__v //strip off __v so that last sent wins. Without this, typing too fast will cause 500 error.
+				console.log('jsonToSaveInUpdateSites',jsonToSave);
 				$http.put('http://localhost:9000/api/sites/' + $scope.sites[0]._id, jsonToSave);
 			};
 
@@ -70,6 +71,8 @@ angular.module('Volusion.controllers')
 					//resize: function(event, $element, widget) {}, // optional callback fired when item is resized,
 					stop: function() {
 						console.log('fired resizable stop');
+						$scope.updateSites();
+
 						Sites.saveGridsterLayout();
 						//$scope.staticSites.$save(); // THIS NEEDS TO BE A FACTORY THAT WE CAN CALL - WON'T WORK LIKE THIS!
 					} // optional callback fired when item is finished resizing
@@ -81,6 +84,8 @@ angular.module('Volusion.controllers')
 					//drag: function(event, $element, widget) {}, // optional callback fired when item is moved,
 					stop: function() {
 						console.log('fired draggable stop');
+						$scope.updateSites();
+
 						Sites.saveGridsterLayout();
 						//$scope.staticSites.$save(); // THIS NEEDS TO BE A FACTORY THAT WE CAN CALL - WON'T WORK LIKE THIS!
 					} // optional callback fired when item is finished dragging
@@ -271,6 +276,32 @@ angular.module('Volusion.controllers')
 
 		$scope.$watch('gridsterLayout', function (newValue) {
 			console.log('gridsterLayout changed', newValue);
+		}, true);
+
+
+
+		$http.get('http://localhost:9000/api/sites?hostname=monkeypants').success(function(sites) {
+			$scope.sites = sites;
+			//FYI: syncUpdates will not work on an object; Needs to be an array. Or fix the syncUpdates factory to support objects.
+			socket.syncUpdates('site', $scope.sites);
+		});
+
+		//HACK:Since gridster doesn't respect our updates, make sure it stays in sync and if not, reset it.
+		//UPDATE: This hack doesn't work now that we're using track by
+		$http.get('http://localhost:9000/api/sites?hostname=monkeypants').success(function(sites) {
+			$scope.unBoundSites = sites;
+			//FYI: syncUpdates will not work on an object; Needs to be an array. Or fix the syncUpdates factory to support objects.
+			socket.syncUpdates('site', $scope.unBoundSites);
+		});
+		$scope.$watch('unBoundSites', function () {
+			$timeout(function (){
+				var tempPureJsonGridsterLayout = angular.toJson($scope.sites[0].pageTemplates[0].widgets);
+				var tempPureJsonNewFB = angular.toJson($scope.unBoundSites[0].pageTemplates[0].widgets);
+				if (tempPureJsonGridsterLayout !== tempPureJsonNewFB) {
+					console.log('!!!!!!!! FB updates came in, and gridster is out of sync. Resetting gridsterLayout', tempPureJsonGridsterLayout, tempPureJsonNewFB);
+					$scope.sites = $scope.unBoundSites;
+				}
+			}, 5000);
 		}, true);
 
 		//HACK:Since firebase sends updates in pieces, Gridster get's invalid array updates first and tries to correct them.

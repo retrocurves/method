@@ -1,28 +1,28 @@
-<h1>Sites</h1>
-<ul>
-	<li ng-repeat="pageTemplate in sites[0].pageTemplates">
-		{{pageTemplate.key}}
-		<ul>
-			<li ng-repeat="widget in pageTemplate.widgets">
-				{{widget.name}}
-				<ul>
-					<li>widget: {{widget.widget}}</li>
-					<li>col: {{widget.col}}</li>
-					<li>row: {{widget.row}}</li>
-					<li>sizeX: {{widget.sizeX}}</li>
-					<li>sizeY: {{widget.sizeY}}</li>
-					<li>content: {{widget.content}}</li>
-					<li>settings: {{widget.settings}}</li>
-				</ul>
-			</li>
-		</ul>
-	</li>
-</ul>
+<!--<h1>Sites</h1>-->
+<!--<ul>-->
+	<!--<li ng-repeat="pageTemplate in sites[0].pageTemplates">-->
+		<!--{{pageTemplate.key}}-->
+		<!--<ul>-->
+			<!--<li ng-repeat="widget in pageTemplate.widgets">-->
+				<!--{{widget.name}}-->
+				<!--<ul>-->
+					<!--<li>widget: {{widget.widget}}</li>-->
+					<!--<li>col: {{widget.col}}</li>-->
+					<!--<li>row: {{widget.row}}</li>-->
+					<!--<li>sizeX: {{widget.sizeX}}</li>-->
+					<!--<li>sizeY: {{widget.sizeY}}</li>-->
+					<!--<li>content: {{widget.content}}</li>-->
+					<!--<li>settings: {{widget.settings}}</li>-->
+				<!--</ul>-->
+			<!--</li>-->
+		<!--</ul>-->
+	<!--</li>-->
+<!--</ul>-->
 
 <h1>Editor</h1>
 <h3>Widgets on page</h3>
 <ul>
-	<li ng-repeat="item in sites[0].pageTemplates[0].widgets">
+	<li ng-repeat="item in sites[0].pageTemplates[0].widgets track by $index">
 	<span style="font-size:130%">
 	<input type="text" ng-model="item.name" ng-change="updateSites()">
 	</span>
@@ -62,7 +62,7 @@
 	<div gridster="gridsterOpts">
 		<ul>
 			<li gridster-item="item"
-				ng-repeat="item in sites[0].pageTemplates[0].widgets"
+				ng-repeat="item in sites[0].pageTemplates[0].widgets track by $index"
 				style="border: 1px solid red; overflow: hidden;">
 				<h2>{{item.name}}</h2>
 				<p>(size: {{item.sizeX}} x {{item.sizeY}} | row: {{item.row}} | col: {{item.col}} )</p>

@@ -147,14 +147,11 @@ angular.module('Volusion.services')
 					// replace oldItem if it exists
 					// otherwise just add item to the collection
 					if (oldItem) {
-						array.splice(index, 1, item);
+						array.splice(index, 1, _.merge(oldItem,item));
 						event = 'updated';
 					} else {
 						array.push(item);
 					}
-
-					console.log(item);
-					console.log(array);
 
 					cb(event, item, array);
 				});

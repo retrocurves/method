@@ -25,14 +25,12 @@ angular.module('Volusion.controllers')
 			};
 
 			$scope.getCategory = function (newSlug, id) {
-
 				vnApiClient.api.Category().get(id).then(function (response) {
 					// Handle the category data
-					console.log(response);
 					$scope.category = response.data;
 
 					var content = $scope.category.content;
-                    angular.extend($rootScope.seo, {
+					angular.extend($rootScope.seo, {
 						metaTagTitle: content.metaTagTitle,
 						metaTagKeywords: content.metaTagKeywords,
 						metaTagDescription: content.metaTagDescription
@@ -50,20 +48,23 @@ angular.module('Volusion.controllers')
 				//var params = vnProductParams.getParamsObject();
 				vnApiClient.api.Product().queryByCategoryId().then(function (response) {
 
-					$scope.products = response.data.items;
-					angular.forEach($scope.products, function(product) {
-						product.url = '/p/' + product.productCode;
-					});
+					$scope.$apply(function() {
 
-					$scope.facets = lodash.filter(response.data.facets, function(facet) {
-						return facet.facetType === 'Value' && facet.values.length > 0;
-					});
+						$scope.products = response.data.items;
+						angular.forEach($scope.products, function(product) {
+							product.url = '/p/' + product.productCode;
+						});
 
-					$scope.hasFacetsOrCategories = response.data.facets.length > 0;
-					$scope.cursor = {
-						totalPages: response.data.pageCount,
-						currentPage: Math.ceil ((response.data.startIndex + 1) / themeSettings.getPageSize())
-					};
+						$scope.facets = lodash.filter(response.data.facets, function(facet) {
+							return facet.facetType === 'Value' && facet.values.length > 0;
+						});
+
+						$scope.hasFacetsOrCategories = response.data.facets.length > 0;
+						$scope.cursor = {
+							totalPages: response.data.pageCount,
+							currentPage: response.data.pageCount <= response.data.startIndex ? 1 : response.data.startIndex + 1
+						};
+					});
 				});
 				/*vnApi.Product().get(params).$promise.then(function (response) {
 
@@ -121,8 +122,8 @@ angular.module('Volusion.controllers')
 					$scope.showApplyButton = false;
 					$scope.mobileDisplay = true; // default cats and facets to open
 					$scope.showMobileSearch = false;
-					$scope.isMobileAndVisible = false;
-					$scope.isMobileAndHidden = true;
+					$scope.isMobileAndVisible = true;
+					$scope.isMobileAndHidden = false;
 					$scope.categoryAccordiansOpen = true;
 					$scope.priceAccordiansOpen = true;
 					$scope.sortAccordianIsOpen = true;

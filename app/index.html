@@ -104,9 +104,13 @@
 	<script src="/bower_components/javascript-detect-element-resize/jquery.resize.js"></script>
 	<!-- endbuild -->
 
-	<!-- socket to our phoenix sites db -->
-	<script src="http://localhost:9000/socket.io-client/socket.io.js"></script>
+	<!-- socket.io client libary (can be loaded from anywhere including a CDN) -->
+	<script src="http://localhost:3000/socket.io/socket.io.js"></script>
 
+	<!-- establish a socket to localhost -->
+	<script>
+		var socket = io('http://localhost:3000');
+	</script>
 
 	<!-- build:js({.tmp,app}) /scripts/scripts.js -->
 	<script src="scripts/config.js"></script>

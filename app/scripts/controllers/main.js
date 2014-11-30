@@ -8,7 +8,7 @@ angular.module('Volusion.controllers')
 			//Sites (NEW model from phoenix)
 			//TODO: Move this to a Sites factory
 			$scope.sites = [];
-			$http.get('http://localhost:9000/api/sites?hostname=monkeypants').success(function(result) {
+			$http.get('http://localhost:3000/api/sites?filter={"where":{"subDomain":"monkeypants"}}').success(function(result) {
 				$scope.sites = result;
 				socket.syncUpdates('site', $scope.sites);
 			});
@@ -17,7 +17,7 @@ angular.module('Volusion.controllers')
 				var jsonToSave = angular.fromJson(angular.toJson($scope.sites[0])); //strip off all the angular junk
 				//delete jsonToSave.__v //strip off __v so that last sent wins. Without this, typing too fast will cause 500 error.
 				console.log('jsonToSaveInUpdateSites',jsonToSave);
-				$http.put('http://localhost:9000/api/sites/' + $scope.sites[0]._id, jsonToSave);
+				$http.put('http://localhost:3000/api/sites/' + $scope.sites[0].id, jsonToSave);
 			};
 
 			//----------------------------------------------

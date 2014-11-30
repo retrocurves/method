@@ -1,41 +1,41 @@
-<h1>Editor</h1>
-<h3>Widgets on page</h3>
-<ul>
-	<li ng-repeat="item in sites[0].pageTemplates[0].widgets track by $index">
-	<span style="font-size:130%">
-	<input type="text" ng-model="item.name" ng-change="updateSites()">
-	</span>
-	(size: {{item.sizeX}} x {{item.sizeY}} | row: {{item.row}} | col: {{item.col}})
+<!--<h1>Editor</h1>-->
+<!--<h3>Widgets on page</h3>-->
+<!--<ul>-->
+	<!--<li ng-repeat="item in sites[0].pageTemplates[0].widgets track by $index">-->
+	<!--<span style="font-size:130%">-->
+	<!--<input type="text" ng-model="item.name" ng-change="updateSites()">-->
+	<!--</span>-->
+	<!--(size: {{item.sizeX}} x {{item.sizeY}} | row: {{item.row}} | col: {{item.col}})-->
 
-		<ul style="background-color:#efefef; width:400px; margin-bottom: 10px;">
+		<!--<ul style="background-color:#efefef; width:400px; margin-bottom: 10px;">-->
 
-			<!-- if image widget, show image widget settings -->
-			<li ng-if="item.widget == 'image'">
-				Image Url: <input type="text" ng-model="item.settings.imgUrl" ng-change="updateSites()">
-			</li>
+			<!--&lt;!&ndash; if image widget, show image widget settings &ndash;&gt;-->
+			<!--<li ng-if="item.widget == 'image'">-->
+				<!--Image Url: <input type="text" ng-model="item.settings.imgUrl" ng-change="updateSites()">-->
+			<!--</li>-->
 
-			<!-- if html widget, show html widget settings -->
-			<li ng-if="item.widget == 'html'">
-				HTML: <input type="text" ng-model="item.settings.html" ng-change="updateSites()">
-			</li>
+			<!--&lt;!&ndash; if html widget, show html widget settings &ndash;&gt;-->
+			<!--<li ng-if="item.widget == 'html'">-->
+				<!--HTML: <input type="text" ng-model="item.settings.html" ng-change="updateSites()">-->
+			<!--</li>-->
 
-			<!-- if carousel widget, show carousel widget settings -->
-			<li ng-if="item.widget == 'carousel'">
-				Interval: <input type="text" ng-model="item.settings.interval" ng-change="updateSites()">
-			</li>
-			<li ng-if="item.widget == 'carousel'" ng-repeat="slide in item.settings.slides">
-			Slide {{$index+1}}
-				<ul>
-					<li>
-						Image Url: <input type="text" ng-model="slide.imgUrl" ng-change="updateSites()">
-					</li>
-				</ul>
-			</li>
+			<!--&lt;!&ndash; if carousel widget, show carousel widget settings &ndash;&gt;-->
+			<!--<li ng-if="item.widget == 'carousel'">-->
+				<!--Interval: <input type="text" ng-model="item.settings.interval" ng-change="updateSites()">-->
+			<!--</li>-->
+			<!--<li ng-if="item.widget == 'carousel'" ng-repeat="slide in item.settings.slides">-->
+			<!--Slide {{$index+1}}-->
+				<!--<ul>-->
+					<!--<li>-->
+						<!--Image Url: <input type="text" ng-model="slide.imgUrl" ng-change="updateSites()">-->
+					<!--</li>-->
+				<!--</ul>-->
+			<!--</li>-->
 
-		</ul>
-	</li>
-</ul>
-<hr />
+		<!--</ul>-->
+	<!--</li>-->
+<!--</ul>-->
+<!--<hr />-->
 
 <div class="container th-home-content">
 	<div gridster="gridsterOpts">

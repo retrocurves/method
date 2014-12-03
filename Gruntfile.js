@@ -66,7 +66,11 @@ module.exports = function(grunt) {
 								'currency': 'usd',
 								'locale': 'en-US'
 							},
-							storeDomain: '/storefront'
+							storeDomain: '/storefront',
+							anonUser: {
+								username: 'prabin_varma@volusion.com',
+								password: 'test1234'
+							}
 						}
 					}
 				}

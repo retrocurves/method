@@ -2,7 +2,7 @@
 	<!-- PRODUCT TITLE/NAME FOR TABLET -->
 	<div class="row">
 		<div class="col-sm-12 visible-sm-block th-product-details__title">
-			<span itemprop="name" data-ng-bind="product.name"></span>
+			<span itemprop="name" data-ng-bind="product.content.productName"></span>
 		</div>
 	</div>
 
@@ -12,9 +12,9 @@
 			<div class="visible-xs-block th-product">
 				<div class="vn-slider vn-slider--product">
 					<carousel data-interval="carousel.interval">
-						<slide data-ng-repeat="image in product.currentImageCollection | filter: '!youtube.com'" data-active="image.active">
+						<slide data-ng-repeat="image in product.content.productImages" data-active="image.active">
 							<div class="vn-slider__slide">
-								<img itemprop="image" data-ng-src="{{ image.medium }}" class="img-responsive"/>
+								<img itemprop="image" data-ng-src="{{ image.imageUrl }}" class="img-responsive"/>
 							</div>
 						</slide>
 					</carousel>
@@ -23,16 +23,16 @@
 			<div class="hidden-xs">
 				<div class="clearfix th-product-view vn-zoom">
 					<img vn-easy-zoom
-					     ng-src="product.image.medium"
-					     ez-zoom-src="product.image.large"
+					     ng-src="product.image.imageUrl"
+					     ez-zoom-src="product.image.imageUrl"
 					     ez-adjacent="isInDesktopMode"
 					     ez-overlay="!isInDesktopMode"
-					     alt="{{product.name}}">
+					     alt="{{product.content.productName}}">
 
 					<div class="th-product-view__alts">
-						<span data-ng-click="product.image=image" ng-repeat="image in product.currentImageCollection | filter: '!youtube.com'"
+						<span data-ng-click="product.image=image" ng-repeat="image in product.content.productImages"
 						      class="col-xs-3 th-product-view__thumbnail">
-							<img data-ng-src="{{ image.medium }}" class="img-responsive" alt="">
+							<img data-ng-src="{{ image.imageUrl }}" class="img-responsive" alt="">
 						</span>
 					</div>
 				</div>
@@ -43,21 +43,21 @@
 		<div class="col-sm-6 col-md-7 th-product-details">
 			<div class="row visible-md-block visible-lg-block">
 				<div class="col-xs-12 th-product-details__title">
-					<span itemprop="name" data-ng-bind="product.name"></span>
+					<span itemprop="name" data-ng-bind="product.content.productName"></span>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-xs-12 col-md-6">
 					<div class="th-product-details__title visible-xs-block">
-						<span itemprop="name" data-ng-bind="product.name"></span>
+						<span itemprop="name" data-ng-bind="product.content.productName"></span>
 					</div>
 					<div class="th-product__price--large">
-						<span class="th-price--reg" data-ng-show="product.pricing.regularPrice > 0">
-							<span class="th-price" data-ng-class="{strike: product.pricing.salePrice > 0}">
-								<span itemprop="price" data-ng-bind="product.pricing.regularPrice | currency"></span></span>
+						<span class="th-price--reg" data-ng-show="product.price.price > 0">
+							<span class="th-price" data-ng-class="{strike: product.price.salePrice > 0}">
+								<span itemprop="price" data-ng-bind="product.price.price | currency"></span></span>
 							<span class="th-price-text" data-translate="product.regularPriceLabel">Reg</span></span>
-						<span class="th-price--now" itemscope itemtype="http://schema.org/Offer" data-ng-show="product.pricing.salePrice > 0">
-							<span class="th-price"><span itemprop="price" data-ng-bind="product.pricing.salePrice | currency"></span></span>
+						<span class="th-price--now" itemscope itemtype="http://schema.org/Offer" data-ng-show="product.price.salePrice > 0">
+							<span class="th-price"><span itemprop="price" data-ng-bind="product.price.salePrice | currency"></span></span>
 								<span class="th-price-text" data-translate="product.nowPriceLabel">Now</span></span>
 					</div>
 						<div class="hidden-xs th-write-review" data-ng-if="product.avgRating">
@@ -73,10 +73,10 @@
 				<!-- end left product column -->
 				<div class="col-xs-12 col-md-6">
 					<div class="th-product-details__options">
-						<div data-vn-product-option
+						<div data-mz-product-option
 						     data-ng-repeat="option in product.options"
 						     data-option="option"
-						     data-product="product"
+						     data-mz-product="mzProduct"
 						     data-save-to="cartItem.options">
 						</div>
 					</div>
@@ -86,13 +86,13 @@
 								<span class="input-group-btn">
 									<button data-vn-element="btn" class="btn btn-default"
 									        data-ng-click="decrementQty()"
-									        data-ng-disabled="cartItem.qty <= 1">
+									        data-ng-disabled="product.quantity <= 1">
 										<span class="glyphicon glyphicon-minus"></span>
 									</button>
 								</span>
 								<input data-vn-element="input"
 								       class="form-control"
-								       data-ng-model="cartItem.qty"
+								       data-ng-model="product.quantity"
 								       data-ng-change="changeQty()">
 								<span class="input-group-btn">
 									<button data-vn-element="btn"
@@ -174,7 +174,7 @@
 	</div>
 
 	<!-- REVIEWS -->
-	<div class="row th-reviews" data-ng-if="config.general.enableCustomerReviews">
+	<!--<div class="row th-reviews" data-ng-if="config.general.enableCustomerReviews">
 		<div class="col-xs-12 th-reviews__totals">
 			<div class="th-reviews__heading" data-translate="product.reviews">Reviews</div>
 			<div class="th-reviews__totals--left" data-ng-if="ratingsAndReviews.data.reviews.length < 1">Be the first to review!</div>
@@ -198,8 +198,8 @@
 					Write a Review &gt;</a>
 			</div>
 		</div>
-	</div>
-	<div class="row th-reviews" data-ng-if="config.general.enableCustomerReviews">
+	</div>-->
+	<!--<div class="row th-reviews" data-ng-if="config.general.enableCustomerReviews">
 		<div data-ng-if="ratingsAndReviews.data.reviews.length > 0" class="col-md-6 th-reviews" itemprop="review" itemscope
 		     itemtype="http://schema.org/Review" data-ng-repeat="review in ratingsAndReviews.data.reviews">
 			<div class="th-reviews__helpful"><span data-ng-bind="review.helpful"></span> people found the following review
@@ -229,5 +229,5 @@
 				   class="btn btn-default btn-grey-sm" data-translate="common.no">No</a>
 			</div>
 		</div>
-	</div>
+	</div>-->
 </div><!--/container -->

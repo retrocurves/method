@@ -11,6 +11,12 @@ notifications:
   email:
     on_success: change
     on_failure: always
+
+branches:
+  only:
+  	- master
+    - develop
+
 before_install:
 - npm install -g grunt-cli bower
 after_success:

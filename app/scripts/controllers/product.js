@@ -1,6 +1,7 @@
 angular.module('Volusion.controllers')
-	.controller('ProductCtrl', ['$rootScope', '$scope', 'vnApi', '$location', '$routeParams', '$filter', '$anchorScroll', '$translate', 'vnCart', 'vnAppMessageService', 'vnProduct', 'snapRemote', 'notifications',
-		function ($rootScope, $scope, vnApi, $location, $routeParams, $filter, $anchorScroll, $translate, vnCart, vnAppMessageService, vnProduct, snapRemote, notifications) {
+	.controller('ProductCtrl', ['$rootScope', '$scope', 'vnApi', '$location', '$routeParams', '$filter', '$anchorScroll', '$translate', 'vnCart', 'vnAppMessageService', 'vnProduct', 'snap' +
+		'Remote', 'notifications', 'vnApiClient', 'MzProduct', 'lodash',
+		function ($rootScope, $scope, vnApi, $location, $routeParams, $filter, $anchorScroll, $translate, vnCart, vnAppMessageService, vnProduct, snapRemote, notifications, vnApiClient, MzProduct, lodash) {
 
 			'use strict';
 
@@ -20,20 +21,12 @@ angular.module('Volusion.controllers')
 			};
 
 			function modifyQuantity(amount) {
-				$scope.cartItem.qty = parseInt($scope.cartItem.qty) + amount; // manual change in input stringify model
-				vnProduct.setQuantityInStock(amount);
+				$scope.product.quantity = parseInt($scope.product.quantity) + amount; // manual change in input stringify model
 			}
 
-			function setDefaults() {
-
-				if (vnProduct.getProductImage() === null) {
-					vnProduct.setProductNoImage(['/images/theme/tcp-no-image.jpg','/images/theme/tcp-no-image.jpg','/images/theme/tcp-no-image.jpg']);
-				}
-
-				$scope.cartItem.options = $scope.cartItem.options || [];
-				$scope.itemSelectionsNotInStock = vnProduct.findAvailability();
-
-				setPopover();
+			function setdefaults() {
+				$scope.product.image = $scope.product.content.productImages[0];
+				$scope.buttonDisabled = true;
 			}
 
 			function setPopover() {
@@ -70,7 +63,31 @@ angular.module('Volusion.controllers')
 				}
 			}
 
-			vnApi.Product().get({slug: $routeParams.slug }).$promise
+			vnApiClient.initialize().then(function() {
+				vnApiClient.api.Product().get($routeParams.slug).then(function (response) {
+
+					$scope.mzProduct = new MzProduct(response, $location.absUrl());
+
+					$scope.product = $scope.mzProduct.product;
+
+					angular.extend($rootScope.seo, $scope.mzProduct.getProductSeo());
+
+					setdefaults();
+
+				});
+			});
+
+			$scope.$watch('product.purchasableState.isPurchasable', function(newValue) {
+				var isPurchasable = typeof newValue !== 'undefined' && newValue === true;
+                $scope.buttonDisabled = !isPurchasable;
+				if (!isPurchasable && $scope.product.purchasableState.messages.length > 0) {
+					$scope.popoverText = lodash.reduce($scope.product.purchasableState.messages, function(result, item) {
+						result += item.message + '\n';
+						return result;
+					}, '');
+				}
+			});
+			/*vnApi.Product().get({slug: $routeParams.slug }).$promise
 				.then(function (response) {
 
 					// using vnProduct's setters will reflect $scope.product object
@@ -123,7 +140,7 @@ angular.module('Volusion.controllers')
 						.then(function (response) {
 							$scope.accessories = response.data;
 						});
-				});
+				});*/
 
 			$rootScope.$on('VN_PRODUCT_SELECTED', function (event, selection) {
 				$scope.product.optionSelection = selection;
@@ -131,7 +148,12 @@ angular.module('Volusion.controllers')
 
 			$scope.addToCart = function() {
 
-				if (vnProduct.findRequiredOptionsAreSelected().length > 0 ||
+				$scope.mzProduct.addToCart().then(function(response) {
+					console.log(response);
+				}, function(err) {
+					console.log(err);
+				});
+				/*if (vnProduct.findRequiredOptionsAreSelected().length > 0 ||
 					!vnProduct.findOptionAvailability($scope.product.optionSelection.key)) {
 
 					return;
@@ -166,7 +188,7 @@ angular.module('Volusion.controllers')
 
 						// hide "wait" animation and enable button
 						$scope.buttonWait = false;
-					});
+					});*/
 			};
 
 			$scope.decrementQty = function () {
@@ -174,8 +196,8 @@ angular.module('Volusion.controllers')
 			};
 
 			$scope.changeQty = function () {
-				if (isNaN($scope.cartItem.qty) || parseInt($scope.cartItem.qty) < 1) {
-					$scope.cartItem.qty = 1;
+				if (isNaN($scope.product.quantity) || parseInt($scope.product.quantity) < 1) {
+					$scope.product.quantity = 1;
 				}
 			};
 

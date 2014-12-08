@@ -1,4 +1,4 @@
-<div class="container th-home-content" ng-controller="HomeCtrl">
+<div class="container th-home-content">
 	<div gridster="gridsterOpts">
 		<ul>
 			<li gridster-item="item"
@@ -7,9 +7,9 @@
 				<h2>{{item.name}}</h2>
 				<p>(size: {{item.sizeX}} x {{item.sizeY}} | row: {{item.row}} | col: {{item.col}} )</p>
 				<div
-					 data-tile-content="{{ item.content }}"
-					 data-tile-settings="{{ item.settings }}">
-				 </div>
+						data-tile-content="{{ item.content }}"
+						data-tile-settings="{{ item.settings }}">
+				</div>
 			</li>
 		</ul>
 	</div>

@@ -17,6 +17,10 @@ angular.module('methodApp', [
 	'pascalprecht.translate',
 	'snap',
 	'textAngular',
+	'gridster',
+	'firebase',
+	'btford.socket-io',
+
 
 	// Volusion modules
 	'config',
@@ -111,16 +115,25 @@ angular.module('methodApp', [
 				templateUrl: 'views/theme-settings.html',
 				controller : 'ThemeSettingsCtrl'
 			})
-			// Articles must be last or the prior /search and /theme-settings will never be picked up
 			.when('/:slug', {
-				templateUrl: 'views/article.html',
-				controller : 'ArticleCtrl',
-                resolve: {
-                    article: ['vnApi', '$route', function(vnApi, $route) {
-                        return vnApi.Article().get({slug: $route.current.params.slug}).$promise;
-                    }]
-                }
+				templateUrl: 'views/generic.html',
+				controller : 'GenericCtrl',
+				resolve: {
+					page: ['sbApi', '$route', function(sbApi, $route) {
+						return sbApi.Page().get({slug: $route.current.params.slug}).$promise;
+					}]
+				}
 			})
+			// Articles must be last or the prior /search and /theme-settings will never be picked up
+			//.when('/:slug', {
+			//	templateUrl: 'views/article.html',
+			//	controller : 'ArticleCtrl',
+             //   resolve: {
+             //       article: ['vnApi', '$route', function(vnApi, $route) {
+             //           return vnApi.Article().get({slug: $route.current.params.slug}).$promise;
+             //       }]
+             //   }
+			//})
 			.otherwise({
 				redirectTo: '/'
 			});

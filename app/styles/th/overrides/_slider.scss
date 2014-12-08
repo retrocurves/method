@@ -1,61 +1,70 @@
 .vn-slider {
 
-	.carousel-indicators {
-		.active {
-			width            : 13px;
-			height           : 13px;
-			border           : 0;
-			background-color : $brand-info;
+	.carousel {
+
+		//height: 468px;
+
+		.carousel-inner {
+		//	height: 100%;
 		}
 
-		li {
-			width            : 13px;
-			margin           : 0 3px;
-			height           : 13px;
-			background-color : $body-bg;
-			border           : 0;
-		}
-	}
+		.carousel-indicators {
+			.active {
+				width            : 13px;
+				height           : 13px;
+				border           : 0;
+				background-color : $brand-info;
+			}
 
-	.carousel-control {
-		.glyphicon-chevron-left, .glyphicon-chevron-right {
-			width       : 35px;
-			height      : auto;
-			margin      : 0;
-			margin-top  : -90px;
-			font-size   : 110px;
-			font-family : Arial, Helvetica, sans-serif;
-
-			@include respond-to(xs) {
-				font-size  : 80px;
-				margin-top : -50px;
+			li {
+				width            : 13px;
+				margin           : 0 3px;
+				height           : 13px;
+				background-color : $body-bg;
+				border           : 0;
 			}
 		}
 
-		.glyphicon-chevron-left {
-			left : 20%;
+		.carousel-control {
+			.glyphicon-chevron-left, .glyphicon-chevron-right {
+				width       : 35px;
+				height      : auto;
+				margin      : 0;
+				margin-top  : -90px;
+				font-size   : 110px;
+				font-family : Arial, Helvetica, sans-serif;
 
-			&:before {
-				content : '\2039';
+				@include respond-to(xs) {
+					font-size  : 80px;
+					margin-top : -50px;
+				}
 			}
-		}
 
-		.glyphicon-chevron-right {
-			right : 20%;
+			.glyphicon-chevron-left {
+				left : 20%;
 
-			&:before {
-				content : '\203a';
+				&:before {
+					content : '\2039';
+				}
+			}
+
+			.glyphicon-chevron-right {
+				right : 20%;
+
+				&:before {
+					content : '\203a';
+				}
 			}
 		}
 	}
 
 	&__slide {
-		height              : 237px;
+		height              : 240px;
 		background-size     : cover;
 		background-position : center center;
 
 		@include respond-to(sm) {
-			height : 405px;
+			height : 470px;
 		}
 		@include respond-to(md-and-up) {
 			height : 485px;

@@ -1,5 +1,6 @@
 <!doctype html>
 <html class="no-js" ng-app="methodApp" data-ng-strict-di>
+<!--<html class="no-js" data-ng-strict-di>-->
 <head data-vn-meta-tags data-title="seo.metaTagTitle"
 	data-description="seo.metaTagDescription" data-keywords="seo.metaTagKeywords"
 	data-robots="seo.enableRobotsMetatags" data-to-append="seo.globallyAppendedMetatags"
@@ -16,6 +17,7 @@
 	<link rel="stylesheet" href="/../bower_components/angular-snap/angular-snap.css" />
 	<link rel="stylesheet" href="/../bower_components/fontawesome/css/font-awesome.css" />
 	<link rel="stylesheet" href="/../bower_components/vn-toolbox-common/dist/vn-toolbox-common-styles.css" />
+	<link rel="stylesheet" href="/../bower_components/vn-checkout/dist/vncheckout-styles.css" />
 	<!-- endbower -->
 	<link rel="stylesheet" href="/bower_components/easyzoom/css/easyzoom.css" />
 	<!-- endbuild -->
@@ -50,6 +52,7 @@
 
 	<!-- build:js scripts/vendor.js -->
 	<!-- bower:js -->
+	<script src="/../bower_components/es5-shim/es5-shim.js"></script>
 	<script src="/../bower_components/jquery/dist/jquery.js"></script>
 	<script src="/../bower_components/angular/angular.js"></script>
 	<script src="/../bower_components/angular-resource/angular-resource.js"></script>
@@ -88,7 +91,8 @@
 	<script src="/../bower_components/vn-toolbox-common/dist/vn-toolbox-common.js"></script>
 	<script src="/../bower_components/textAngular/dist/textAngular.min.js"></script>
 	<script src="/../bower_components/headjs/dist/1.0.0/head.min.js"></script>
-	<script src="/../bower_components/vn-inception/dist/vn-inception.js"></script>
+	<script src="/../bower_components/json3/lib/json3.js"></script>
+	<script src="/../bower_components/vn-checkout/dist/vncheckout.js"></script>
 	<!-- endbower -->
 	<!-- endbuild -->
 
@@ -110,6 +114,26 @@
 	<script src="scripts/controllers/shopping-cart.js"></script>
 	<script src="scripts/services/notifications.js"></script>
 	<!-- endbuild -->
+
+	<script>
+//		window.name = 'NG_DEFER_BOOTSTRAP!';
+//		console.log('the checkoutApp: ', angular.module('vnCheckoutApp'));
+//		angular.bootstrap(document, ['methodApp']);
+//		angular.element(document).ready(function() {
+//			angular.resumeBootstrap(['vnCheckoutApp']);
+//			console.log('its bootstrapped');
+//		});
+//		angular.bootstrap();
+//		setTimeout(function() {
+//			console.log('ti works');
+//			(function (angular) {
+//				angular.element(document).ready(function () {
+////				window.name = 'NG_DEFER_BOOTSTRAP!';
+//					angular.resumeBootstrap('vnCheckoutApp');
+//				});
+//			})(angular);
+//		},2000);
+	</script>
 
 </body>
 </html>

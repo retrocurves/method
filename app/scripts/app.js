@@ -24,7 +24,14 @@ angular.module('methodApp', [
 	'angulartics',
 	'Volusion.toolboxCommon',
 	'Volusion.controllers',
-	'Volusion.services'
+	'Volusion.services',
+
+    // App(s)
+	'VolusionCheckout.config',
+	'VolusionCheckout.controllers',
+	'VolusionCheckout.services',
+	'VolusionCheckout.directives',
+	'VolusionCheckout.templates'
 ])
 
 .config(['$routeProvider', '$locationProvider', 'translateProvider', 'vnAppConfigProvider', 'vnDataEndpointProvider', 'ENV',
@@ -80,6 +87,18 @@ angular.module('methodApp', [
 					}]
 				}
 			})
+		  .when('/login', {
+			  templateUrl: 'viwes/login/login.html',
+			  controller : 'LoginCtrl'
+		  })
+		  .when('/checkout', {
+			  templateUrl: 'views/checkout.html',
+			  controller : 'CheckoutCtrl'
+		  })
+		  .when('/thank-you', {
+			  templateUrl: 'views/thank-you/thank-you.html',
+			  controller : 'ThankYouCtrl'
+		  })
 			.when('/search', {
 				templateUrl   : 'views/search.html',
 				controller    : 'SearchCtrl',

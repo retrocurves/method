@@ -36,6 +36,7 @@ module.exports = function(config) {
 			'../bower_components/textAngular/dist/textAngular.min.js',
 			'../bower_components/angular-ui-bootstrap-bower/ui-bootstrap.js',
 			'../bower_components/vn-toolbox-common/dist/vn-toolbox-common.js',
+			'../bower_components/vn-checkout/dist/vncheckout.js',
 			'../app/scripts/**/*.js',
 			'mock/**/*.js',
 			'spec/**/*.mocha.js',

@@ -602,7 +602,7 @@ module.exports = function(grunt) {
 			'clean:configure',
 			'newer:jshint:all',
 			'configure:' + target,
-			'test',
+			//'test',
 			'wiredep',
 			'useminPrepare',
 			'compass:dist',

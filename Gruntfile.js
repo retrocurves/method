@@ -30,47 +30,53 @@ module.exports = function(grunt) {
 		yeoman: appConfig,
 
 		// Environment variables
-		ngconstant: {
+		ngconstant   : {
 			// Options for all targets
-			options: {
+			options    : {
 				space: '  ',
-				wrap: '\'use strict\';\n\n {%= __ngModule %}',
-				name: 'config'
+				wrap : '\'use strict\';\n\n {%= __ngModule %}',
+				name : 'config'
 			},
 			// Environment targets
 			// see "BUILD" task to add additional targets
 			samplestore: {
-				options: {
+				options  : {
 					dest: '<%= yeoman.app %>/scripts/config.js'
 				},
 				constants: {
 					ENV: {
-						name: 'samplestore',
-						host: 'http://www.samplestore.io',
+						name       : 'samplestore',
+						MerchantId : '3de067d8d96d407697da4a9559f99681',
+						path       : '<%= grunt.option(\'PCIaaS.url\') %>',
+						host       : 'http://www.samplestore.io',
 						apiEndpoint: '/api/v1'
 					}
 				}
 			},
-			mybox: {
-				options: {
+			mybox      : {
+				options  : {
 					dest: '<%= yeoman.app %>/scripts/config.js'
 				},
 				constants: {
 					ENV: {
-						name: 'mybox',
-						host: 'http://txlpt374-vm.corp.volusion.com',
+						name       : 'mybox',
+						MerchantId : '',
+						path       : '<%= grunt.option(\'PCIaaS.url\') %>',
+						host       : 'http://txlpt374-vm.corp.volusion.com',
 						apiEndpoint: '/api/v1'
 					}
 				}
 			},
-			production: {
-				options: {
+			production : {
+				options  : {
 					dest: '<%= yeoman.app %>/scripts/config.js'
 				},
 				constants: {
 					ENV: {
-						name: 'production',
-						host: '',
+						name       : 'production',
+						MerchantId : '',
+						path       : '<%= grunt.option(\'PCIaaS.url\') %>',
+						host       : '',
 						apiEndpoint: '/api/v1'
 					}
 				}

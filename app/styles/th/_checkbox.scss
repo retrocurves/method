@@ -1,0 +1,58 @@
+.styled-checkbox-option {
+
+	text-align : left;
+
+	input {
+		display : none !important;
+
+		+ label {
+			cursor    : pointer;
+			font-size : $font-size-base;
+			margin    : 0;
+
+			&:before {
+				content        : '\f096';
+				font-family    : 'FontAwesome';
+				font-size      : 16px;
+				display        : inline-block;
+				width          : 20px;
+				height         : 20px;
+				line-height    : 18px;
+				vertical-align : middle;
+				text-align     : center;
+				color          : $brand-primary;
+				margin-top     : 2px;
+				margin-left    : 1px;
+				margin-right   : 2px;
+				font-weight    : normal;
+			}
+		}
+
+		&:checked {
+			+ label {
+				&:before {
+					content     : '\f046';
+					font-family : 'FontAwesome';
+					margin-left : 2px;
+					margin-right: 1px;
+					//color: $cg8;
+					//border-color: $colorMain;
+					//background: $colorInfo !important;
+				}
+			}
+		}
+	}
+
+	&:hover {
+		input {
+			+ label {
+
+				color : $gray-light;
+
+				&:before {
+					color : $gray-light;
+				}
+			}
+		}
+	}
+}

@@ -80,6 +80,18 @@ angular.module('methodApp', [
 					}]
 				}
 			})
+		  .when('/login', {
+			  templateUrl: 'login/login.html',
+			  controller : 'LoginCtrl'
+		  })
+		  .when('/checkout', {
+			  templateUrl: 'checkout/checkout.html',
+			  controller : 'CheckoutCtrl'
+		  })
+		  .when('/thank-you', {
+			  templateUrl: 'thank-you/thank-you.html',
+			  controller : 'ThankYouCtrl'
+		  })
 			.when('/search', {
 				templateUrl   : 'views/search.html',
 				controller    : 'SearchCtrl',

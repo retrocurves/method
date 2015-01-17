@@ -1,0 +1,7 @@
+input.ng-invalid, button.ng-invalid {
+	border-bottom: 1px solid $brand-danger;
+}
+
+input.ng-pristine, button.ng-pristine {
+	border-bottom: 1px solid #DDDDDD; // ? -> $gray-light;
+}

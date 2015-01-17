@@ -1,0 +1,363 @@
+/*
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3,
+.col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6,
+.col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9,
+.col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11,
+.col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+	position      : relative;
+	min-height    : 1px;
+	padding-left  : 5px;
+	padding-right : 5px;
+}
+*/
+
+html, body {
+	height : 100%;
+}
+
+.btn-primary.btn-lg {
+	//	margin-top: 40px;
+}
+
+.wrapper {
+	position 	   : fixed;
+	height   	   : 100%;
+	width    	   : 100%;
+	padding-bottom : 75px;
+}
+
+.mainView {
+	height : inherit;
+}
+
+.th-checkout-content {
+
+	height : inherit;
+
+	.col-md-4 {
+		// reset padding so overlay will not shift
+		/* padding : 0;*/
+	}
+
+	.img-responsive {
+		margin : 0 auto;
+
+		& > .row {
+			background-color : white;
+			height           : 100%;
+			overflow         : auto;
+			margin           : 0px;
+		}
+	}
+
+	.row {
+		height  : inherit;
+	}
+}
+
+.th-checkout {
+
+	&__step {
+		color      : $gray-dark;
+		padding    : 20px 20px;
+		height     : 100%;
+		border-top : 1px solid #ccc;
+
+		&__btn {
+
+			&__continue {
+				margin-top:30px;
+			}
+		}
+
+		&.-active {
+			overflow-y 		 : scroll;
+			border           : none;
+			border-top       : 1px solid orange;
+			background-color : #eee;
+
+			.th-checkout__step__overlay {
+				display : none;
+			}
+
+			.th-checkout__step__edit {
+				display : none;
+			}
+
+			&.-no-scroll {
+				overflow-y: hidden;
+			}
+		}
+
+		&:hover {
+
+			.fa-pencil {
+				display : inline;
+
+			}
+
+			.fa-check-circle-o {
+				//display : none;
+			}
+		}
+
+		.fa-check-circle-o {
+			height:43px;
+		}
+
+		&__overlay {
+			z-index          : 999;
+			position         : absolute;
+			height           : 100%;
+			width            : 100%;
+			background-color : #fafafa;
+			top              : 0px;
+			bottom           : 0px;
+			left             : 0px;
+			right            : 0px;
+
+			@include opacity(0.8);
+
+			&.-complete {
+				cursor : pointer;
+				@include opacity(0.6);
+
+				&:hover {
+					@include opacity(0.3);
+				}
+			}
+		}
+
+		&__drawer {
+			z-index          : 888;
+			position         : absolute;
+			height           : 100%;
+			width            : 0;
+			background-color : #eee;
+			top              : 0;
+			bottom           : 0;
+			left             : 0;
+			right            : 0;
+			padding          : 0;
+
+			border           : none;
+
+			@include single-transition(width, 500ms, ease);
+
+			&.-left {
+				left  : 0;
+				right : auto;
+			}
+
+			&.-right {
+				right : 0;
+				left  : auto;
+			}
+
+			&.-open {
+				width   : 100%;
+
+				.th-checkout__step__drawer__body {
+					@include single-transition(opacity, 1000ms, ease);
+					opacity : 1;
+				}
+			}
+
+			&__close {
+				position : absolute;
+				top      : 10px;
+				right    : 15px;
+			}
+
+			&__body {
+				//@include single-transition(opacity, 50ms, ease);
+				opacity    : 0;
+				overflow-y : scroll;
+				height     : 100%;
+				overflow-x : hidden;
+				padding    : 20px;
+			}
+
+			&__title {
+				font-weight    : bold;
+				text-transform : uppercase;
+				margin-top     : 10px;
+				margin-bottom  : 20px;
+			}
+
+			&__form-wrapper {
+				padding : 40px;
+			}
+		}
+
+		&__edit {
+			z-index     : 999;
+			position    : absolute;
+			bottom      : 50%;
+			left        : 50%;
+			margin-left : -20px;
+
+			.fa-pencil {
+				display : none;
+			}
+		}
+
+		&__title {
+			text-align    : center;
+			font-size     : 2.4rem;
+			margin-bottom : 20px;
+
+			&__stepNumber span {
+				border-radius    : 50%;
+				width            : 41px;
+				height           : 43px;
+				padding          : 8px 0 0 2px;
+				background-color : $gray-dark;
+				color            : white;
+				@include inline-block;
+			}
+
+			&__stepName {
+				font-weight    : bold;
+				text-transform : uppercase;
+				margin-top     : 10px;
+			}
+		}
+
+		.form-group {
+			margin-bottom : 10px;
+
+			.form-control {
+				font-size        : 1.8rem;
+				background-color : transparent;
+
+				&.btn-lg {
+					/* This is the dropdown input control */
+					height  : 35px;
+					padding : 0px 3px;
+				}
+			}
+
+			.dropdown-menu {
+				font-size : 15px;
+			}
+		}
+
+		.th-dropdown .dropdown-toggle .caret {
+			right : 4px;
+			top   : 18px;
+		}
+
+		&__backButton {
+			margin-top : 20px;
+			font-size  : 1.6rem;
+		}
+
+	}
+
+	&__ship-to {
+
+		&__form-wrapper {
+			.row {
+				padding: 0 20px;
+			}
+		}
+
+		&__choose {
+
+			&__options {
+				margin: 10px 0px 10px 0px;
+				padding: 0;
+				background: #fafafa; /* was $gray-lighter */
+				border: 1px solid #ebebeb;
+				box-shadow: rgba(0, 0, 0, 0.14902) 0px 1px 1px 0px, rgba(0, 0, 0, 0.09804) 0px 1px 2px 0px;
+
+				&__option {
+					position: relative;
+				}
+
+				.styled-optionbox-option {
+					label {
+						div {
+							margin-right: 40px;
+						}
+					}
+				}
+
+				&__editBtn {
+					position: absolute;
+					top: 50%;
+					transform: translateY(-50%);
+					right: 20px;
+				}
+
+			}
+		}
+
+		.dropdown-menu {
+			min-width : 150px;
+			width     : 155px;
+		}
+
+		&__enterAddress {
+			margin           : 10px 0px 10px 0px;
+			padding          : 10px 10px 20px 10px;
+			background: #fafafa; /* was $gray-lighter */
+			border: 1px solid #ebebeb;
+			box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
+		}
+
+		&__display {
+			margin           : 10px 0px 10px 0px;
+			padding          : 20px 20px 10px 20px;
+			background: #fafafa; /* was $gray-lighter */
+			border: 1px solid #ebebeb;
+			box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
+
+			&__addressPart {
+				margin-bottom : 10px;
+			}
+
+			&__new-option {
+				margin           : 10px 0px 10px 40px;
+				padding          : 10px 10px 10px 20px;
+			}
+
+		}
+
+		&__change {
+			text-align : center;
+			margin-bottom : 40px;
+		}
+
+		&__location {
+			text-align : center;
+			padding    : 0 0 40px 0;
+		}
+
+		&__country {
+			position : relative;
+
+			.dropdown-menu {
+				min-width : 150px;
+				width     : 100%;
+			}
+		}
+
+		&__state {
+			position : relative;
+		}
+
+	}
+}
+
+@include respond-to(md-and-up) {
+	.th-checkout-content {
+	}
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@include respond-to(lg) {
+	.th-checkout-content {
+	}
+}

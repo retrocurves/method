@@ -207,7 +207,7 @@
 		line-height        : 40px; 
 		height             : 40px;
 		text-align         : center;
-		@include box-shadow(rgba(0,0,0,0.08) 0px 1px 2px 0px);
+		@include box-shadow(rgba(0,0,0,0.1) 0px 1px 3px 0px);
 
 		&:after{
 			clear   : both;
@@ -240,7 +240,7 @@
 		width              : 100%;
 		border-top         : 1px solid $hr-border;
 		background-color   : $btn-default-bg;
-		@include box-shadow(rgba(0,0,0,0.08) 0px -1px 2px 0px);
+		@include box-shadow(rgba(0,0,0,0.1) 0px -1px 3px 0px);
 
 		&__promo{
 
@@ -454,13 +454,13 @@
 					-o-transition      : 0.05s;
 					overflow           : hidden;
 					line-height        : 1.2em;
-					border: 1px solid $hr-border; 
-					color: #333;
+					border             : 1px solid $hr-border; 
+					color              : #333;
 
 					@include input-placeholder {
-						color: #000;
-						font-weight: 300;
-						font-family: 'roboto-light';
+						color       : #000;
+						font-weight : 300;
+						font-family : 'roboto-light';
 					}
 
 					&:focus{

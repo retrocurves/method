@@ -97,11 +97,11 @@ angular.module('Volusion.controllers')
 			};
 
 			$scope.addGiftWrap = function () {
-				updateCart(true);
+				updateCart(false);
 			};
 
 			$scope.addGiftMsg = function () {
-				updateCart(true);
+				updateCart(false);
 			};
 
 			$scope.applyCoupon = function () {
@@ -146,7 +146,7 @@ angular.module('Volusion.controllers')
 
 				if($scope.cart !== undefined){
 					if ($scope.cart.totals !== undefined) {
-						$scope.calcSubtotal = $scope.cart.totals.items + $scope.cart.totals.discounts;
+						$scope.calcSubtotal = $scope.cart.totals.items + $scope.cart.totals.discounts + $scope.cart.totals.giftWrap;
 						$scope.cartEmpty = ($scope.cart.totals.qty > 0) ? false : true;
 					}
 

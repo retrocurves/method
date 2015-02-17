@@ -100,8 +100,8 @@
 
 					<div class="th-cart__items__item__gift animate-if" data-ng-if="showGiftOption && item.isGiftWrapAvailable">
 						<div class="th-cart__items__item__gift--option" data-ng-class="{'-visual-cue' : visualCue}">
-							<input type="checkbox" data-ng-model="item.giftWrap.selected" data-ng-change="addGiftWrap()">
-							<span data-translate="shopping-card.lblGiftOption">Add gift wrap for</span>&nbsp;{{ item.giftWrap.price | currency }}
+							<input type="checkbox" data-ng-model="item.giftWrap.selected" data-ng-change="addGiftWrap()" id="gift-wrap-{{item.code}}">
+							<label for="gift-wrap-{{item.code}}"><span data-translate="shopping-card.lblGiftOption">Add gift wrap for</span>&nbsp;{{ item.giftWrap.price | currency }}</label>
 						</div>
 
 						<textarea class="th-cart__items__item__gift--message animate-if"
@@ -114,7 +114,7 @@
 							      placeholder="{{ 'shopping-card.lblGiftMessage' | translate }}"></textarea>
 
 						<div class="th-cart__items__item__gift--message-count" data-ng-if="item.giftWrap.selected">
-							<span>{{255 - item.giftWrap.message.length}}</span>
+							<span>{{item.giftWrap.message.length}} / 255</span>
 						</div>
 					</div>
 				</div>

@@ -159,8 +159,6 @@ angular.module('Volusion.controllers')
 						for (var i = 0; i < $scope.cart.items.length; i++) {
 							if ($scope.cart.items[i].giftWrap.selected) {
 								$scope.showGiftOption = true;
-
-								return;
 							}
 						}
 					}

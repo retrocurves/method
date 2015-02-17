@@ -421,8 +421,6 @@
 
 	&__items {
 		padding : 5px 0px;
-		//		overflow-y : scroll;
-		//		height     : 100%;
 
 		&--label {
 			text-transform : uppercase;
@@ -435,7 +433,6 @@
 		}
 
 		&__item {
-
 			position       : relative;
 			margin-bottom  : 10px;
 			padding        : 10px;
@@ -443,12 +440,6 @@
 
 			&__gift {
 				margin-top : 10px;
-
-				&--option {
-					span {
-						margin-left : 10px;
-					}
-				}
 
 				&--message {
 					width              : 100%;
@@ -461,6 +452,22 @@
 					-moz-transition    : 0.05s;
 					-webkit-transition : 0.05s;
 					-o-transition      : 0.05s;
+					overflow           : hidden;
+					line-height        : 1.2em;
+					border: 1px solid $hr-border; 
+					color: #333;
+
+					@include input-placeholder {
+						color: #000;
+						font-weight: 300;
+						font-family: 'roboto-light';
+					}
+
+					&:focus{
+						@include input-placeholder {
+							opacity: .5;
+						}
+					}
 				}
 
 				&--message-count {

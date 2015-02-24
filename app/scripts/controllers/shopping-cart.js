@@ -70,11 +70,9 @@ angular.module('Volusion.controllers')
 
 			$scope.resetGiftOptions = function () {
 
-				var needUpdate = false;
-
 				// ng-change transcludes the scope of the input so the [changed] model
 				// is available into child scope [this]
-				if (this.showGiftOption) {
+				if ($scope.cart.misc.isGift) {
 					// Gift options are shown - show vusual cue
 					$scope.visualCue = true;
 
@@ -89,14 +87,11 @@ angular.module('Volusion.controllers')
 					if (item.isGiftWrapAvailable) {
 						if (item.giftWrap.selected) {
 							item.giftWrap.selected = false;
-							needUpdate = true;
 						}
 					}
 				});
 
-				if (needUpdate) {
-					updateCart(true);
-				}
+				updateCart(true);
 			};
 
 			$scope.addGiftWrap = function () {

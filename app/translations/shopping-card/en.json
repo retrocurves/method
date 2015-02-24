@@ -13,6 +13,7 @@
 		"lblYourCartIsEmpty" : "Your cart is empty",
 		"lblGift" : "This is a gift",
 		"lblGiftOption" : "Add gift wrap for",
-		"lblGiftMessage" : "Gift note on item (optional)"
+		"lblGiftNoteOnBox" : "Gift note on box (optional)",
+		"lblGiftNoteOnItem" : "Gift note on item (optional)"
 	}
 }

@@ -47,8 +47,20 @@
 
 			<div class="th-cart__items" data-ng-if="!cartEmpty">
 
-				<div class="th-cart__items--gift">
-					<input type="checkbox" data-ng-model="showGiftOption" data-ng-change="resetGiftOptions()" id="showGiftOptionInput"><label data-translate="shopping-card.lblGift" for="showGiftOptionInput">This is a gift</label>
+				<div class="th-cart__items__gift">
+					<span class="th-cart__items__gift__label"><input type="checkbox" data-ng-model="cart.misc.isGift" data-ng-change="resetGiftOptions()" id="showGiftOptionInput"><label data-translate="shopping-card.lblGift" for="showGiftOptionInput">This is a gift</label></span>
+					<div class="animate-if" data-ng-if="cart.misc.isGift" data-ng-class="{'-visual-cue' : visualCue}">
+						<textarea class="th-cart__items__gift__message animate-if"
+								   	  maxlength="255"
+								   	  data-vn-auto-grow
+								   	  data-ng-trim="false"
+								   	  data-ng-model="cart.misc.comment"
+								      data-ng-blur="addGiftMsg()"
+								      placeholder="{{ 'shopping-card.lblGiftNoteOnBox' | translate }}"></textarea>
+						<div class="th-cart__items__gift__message-count animate-if">
+							<span>{{cart.misc.comment.length}} / 255</span>
+						</div>
+					</div>
 				</div>
 
 				<div class="th-cart__items__item" data-ng-repeat="item in cart.items | reverse">
@@ -100,22 +112,22 @@
 
 					<br style="clear: both;" />
 
-					<div class="th-cart__items__item__gift animate-if" data-ng-if="showGiftOption && item.isGiftWrapAvailable">
-						<div class="th-cart__items__item__gift--option" data-ng-class="{'-visual-cue' : visualCue}">
+					<div class="th-cart__items__item__gift animate-if" data-ng-if="cart.misc.isGift && item.isGiftWrapAvailable">
+						<div class="th-cart__items__item__gift__option" data-ng-class="{'-visual-cue' : visualCue}">
 							<input type="checkbox" data-ng-model="item.giftWrap.selected" data-ng-change="addGiftWrap()" id="gift-wrap-{{item.code}}">
 							<label for="gift-wrap-{{item.code}}"><span data-translate="shopping-card.lblGiftOption">Add gift wrap for</span>&nbsp;{{ item.giftWrap.price | currency }}</label>
 						</div>
 
-						<textarea class="th-cart__items__item__gift--message animate-if"
+						<textarea class="th-cart__items__item__gift__message animate-if"
 							   	  maxlength="255"
 							   	  data-vn-auto-grow
 							   	  data-ng-trim="false"
 							   	  data-ng-if="item.giftWrap.selected"
 							   	  data-ng-model="item.giftWrap.message"
 							      data-ng-blur="addGiftMsg()"
-							      placeholder="{{ 'shopping-card.lblGiftMessage' | translate }}"></textarea>
+							      placeholder="{{ 'shopping-card.lblGiftNoteOnItem' | translate }}"></textarea>
 
-						<div class="th-cart__items__item__gift--message-count" data-ng-if="item.giftWrap.selected">
+						<div class="th-cart__items__item__gift__message-count animate-if" data-ng-if="item.giftWrap.selected">
 							<span>{{item.giftWrap.message.length}} / 255</span>
 						</div>
 					</div>

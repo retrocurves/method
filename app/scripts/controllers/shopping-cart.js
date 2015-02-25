@@ -74,13 +74,7 @@ angular.module('Volusion.controllers')
 				// is available into child scope [this]
 				if ($scope.cart.misc.isGift) {
 					// Gift options are shown - show vusual cue
-					$scope.visualCue = true;
-
-					$timeout(function () {
-						$scope.visualCue = false;
-					}, 3000);
-
-					return;
+					$scope.showVisualCue();
 				}
 
 				angular.forEach($scope.cart.items, function (item) {
@@ -91,7 +85,18 @@ angular.module('Volusion.controllers')
 					}
 				});
 
-				updateCart(true);
+				updateCart(false);
+			};
+
+			$scope.showVisualCue = function (timeout){
+				var timer = (timeout === undefined) ? 3000 : timeout;
+				$scope.visualCue = true;
+
+				$timeout(function () {
+					$scope.visualCue = false;
+				}, timer);
+
+				return;
 			};
 
 			$scope.addGiftWrap = function () {

@@ -125,6 +125,7 @@
 							   	  data-ng-if="item.giftWrap.selected"
 							   	  data-ng-model="item.giftWrap.message"
 							      data-ng-blur="addGiftMsg()"
+							      data-ng-class="{'-visual-cue' : visualCue}"
 							      placeholder="{{ 'shopping-card.lblGiftNoteOnItem' | translate }}"></textarea>
 
 						<div class="th-cart__items__item__gift__message-count animate-if" data-ng-if="item.giftWrap.selected">

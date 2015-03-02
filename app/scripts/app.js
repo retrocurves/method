@@ -25,7 +25,8 @@ angular.module('methodApp', [
 	'angulartics',
 	'Volusion.toolboxCommon',
 	'Volusion.controllers',
-	'Volusion.services'
+	'Volusion.services',
+	'Volusion.templates'
 ])
 
   .config(['$locationProvider', 'translateProvider', 'vnAppConfigProvider', 'ENV', '$stateProvider', '$urlRouterProvider',
@@ -65,12 +66,22 @@ angular.module('methodApp', [
 			.state('login', {
 				url: '/login',
 				templateUrl: 'login/login.html',
-				controller : 'LoginCtrl'
+				controller : 'LoginCtrl',
+				resolve : {
+					emptyCart : ['vnAppRoute', function (vnAppRoute) {
+						return vnAppRoute.checkEmptyCart();
+					}]
+				}
 			})
 			.state('checkout', {
 				url: '/checkout',
 				templateUrl: 'checkout/checkout.html',
-				controller : 'CheckoutCtrl'
+				controller : 'CheckoutCtrl',
+				resolve : {
+					emptyCart : ['vnAppRoute', function (vnAppRoute) {
+						return vnAppRoute.checkEmptyCart();
+					}]
+				}
 			})
 			.state('thank-you', {
 				url: '/thank-you',
@@ -167,7 +178,7 @@ angular.module('methodApp', [
 				.state('article.cart', getCartState())
 				.state('login.cart', getCartState())
 				.state('thank-you.cart', getCartState());
-			
+
 	}])
 
 .run(['snapRemote', '$rootScope', '$window', 'themeSettings', 'vnCart', 'translate', 'vnModalService', 'vnViewPortWatch',
@@ -196,6 +207,8 @@ angular.module('methodApp', [
 		}]);
 
 		$rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
+			$window.scrollTo(0, 0);
+			
 			if(fromState.name.indexOf('.cart') === -1){
 				snapRemote.close();
 			}

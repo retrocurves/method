@@ -1,22 +1,3 @@
-.animate-if {
-	background : white;
-}
-
-.animate-if.ng-enter, .animate-if.ng-leave {
-	-webkit-transition : all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
-	transition         : all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
-}
-
-.animate-if.ng-enter,
-.animate-if.ng-leave.ng-leave-active {
-	opacity : 0;
-}
-
-.animate-if.ng-leave,
-.animate-if.ng-enter.ng-enter-active {
-	opacity : 1;
-}
-
 .snap-drawers{
 	overflow: hidden;
 }
@@ -44,7 +25,7 @@
 		-webkit-transition : right .3s;
 		-moz-transition    : right .3s;
 
-		@include respond-to(xs){
+		@media (max-width: $screen-xs){
 			width : 100%;
 			right : -100%;
 
@@ -168,7 +149,6 @@
 			display    : inline-block;
 
 			&[disabled] {
-				//background-color : $gray-lighter;
 				color : $btn-link-disabled-color;
 
 				&:hover {
@@ -252,7 +232,7 @@
 		@include box-shadow(rgba(0,0,0,0.08) 0px -1px 2px 0px);
 
 		&--keyboard-fix{
-			@include respond-to(xs){
+			@media (max-width: $screen-xs){
 				.th-cart__promo-add,
 				.th-cart__promo-summary,
 				.th-cart__promo-list,
@@ -263,7 +243,7 @@
 			}
 		}
 		&--promo-keyboard-fix{
-			@include respond-to(xs){
+			@media (max-width: $screen-xs){
 				.th-cart__promo-summary,
 				.th-cart__promo-list,
 				.th-cart__subtotal,
@@ -487,8 +467,6 @@
 
 	&__items {
 		padding : 5px 0px;
-		//		overflow-y : scroll;
-		//		height     : 100%;
 
 		&--label {
 			text-transform : uppercase;
@@ -592,7 +570,7 @@
 							font-size : 10px;
 						}
 					}
-					&__input{
+					&__input.form-control{
 						height    : 30px;
 						width     : 40px;
 						font-size : 12px;
@@ -613,4 +591,23 @@
 		}
 
 	}
+}
+
+.animate-if {
+	background : white;
+}
+
+.animate-if.ng-enter, .animate-if.ng-leave {
+	-webkit-transition : all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+	transition         : all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+}
+
+.animate-if.ng-enter,
+.animate-if.ng-leave.ng-leave-active {
+	opacity : 0;
+}
+
+.animate-if.ng-leave,
+.animate-if.ng-enter.ng-enter-active {
+	opacity : 1;
 }

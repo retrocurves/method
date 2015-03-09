@@ -29,8 +29,8 @@ angular.module('methodApp', [
 	'Volusion.templates'
 ])
 
-  .config(['$locationProvider', 'translateProvider', 'vnAppConfigProvider', 'ENV', '$stateProvider', '$urlRouterProvider',
-	  function ($locationProvider, translateProvider, vnAppConfigProvider, ENV, $stateProvider, $urlRouterProvider) {
+  .config(['$locationProvider', 'translateProvider', 'vnAppConfigProvider', 'ENV', 
+	  function ($locationProvider, translateProvider, vnAppConfigProvider, ENV) {
 
 		  'use strict';
 
